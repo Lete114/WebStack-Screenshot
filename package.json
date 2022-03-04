@@ -1,0 +1,24 @@
+{
+  "name": "webstack-screenshot",
+  "version": "1.0.0",
+  "description": "网站截图 API | Website Screenshot API ",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./start.js",
+    "start:hot": "npx nodemon ./start.js",
+    "lint": "eslint . && prettier --check .",
+    "lint:fix": "eslint --fix . && prettier --check --write ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-data": "^1.0.2",
+    "puppeteer": "^13.4.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.10.0",
+    "nodemon": "^2.0.15",
+    "prettier": "^2.5.1"
+  }
+}

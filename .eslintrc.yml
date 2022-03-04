@@ -1,0 +1,37 @@
+env:
+  node: true
+extends: eslint:recommended
+parserOptions:
+  ecmaVersion: latest
+  sourceType: module
+rules:
+  # off   或 0 - 关闭规则
+  # warn  或 1 - 开启规则, 使用警告 程序不会退出
+  # error 或 2 - 开启规则, 使用错误 程序退出
+
+  no-console: error # 禁用console
+  no-var: error ## 禁止使用var
+  quotes: [error, single, { avoidEscape: true }] ## 使用单引号
+  indent: [error, 2, { SwitchCase: 1 }] ## 缩进必须为2格
+  comma-dangle: [error, never] ## 禁止末尾逗号
+  semi: [error, never] ## 禁止末尾有分号
+  arrow-parens: [error, always] ## 箭头函数的参数使用圆括号
+  array-bracket-spacing: [error, never] ## 禁止在数组括号内出现空格
+  brace-style: error ## 强制 one true brace style
+  camelcase: warn ## 强制属性名称为驼峰风格
+  computed-property-spacing: [error, never] ## 禁止在计算属性内使用空格
+  curly: [error, multi-line] ## https://cn.eslint.org/docs/rules/curly#multi
+  eol-last: [error, always] ## 强制使用换行 (LF)
+  eqeqeq: [error, smart] ## https://cn.eslint.org/docs/rules/eqeqeq#smart
+  max-depth: [error, 3] ## 强制块语句的最大可嵌套深度
+  max-len: [warn, 80] ## 强制行的最大长度
+  max-statements: [warn, 15] ## 限制函数块中的语句的最大数量
+  new-cap: [warn, { capIsNew: false }] ## 要求构造函数首字母大写
+  no-extend-native: error ## 禁止扩展原生类型
+  no-mixed-spaces-and-tabs: error ## 禁止空格和 tab 的混合缩进
+  no-trailing-spaces: error ## 禁用行尾空格
+  no-unused-vars: warn ## 禁止出现未使用过的变量
+  no-use-before-define: [error, nofunc] ## 禁止在变量定义之前使用它们
+  object-curly-spacing: [error, always] ## 不允许花括号中有空格
+  keyword-spacing: [error, { before: true, after: true }] ## 强制在关键字前后使用一致的空格
+  space-unary-ops: error ## 禁止在一元操作符之前或之后存在空格

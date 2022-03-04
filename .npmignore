@@ -1,0 +1,15 @@
+# git
+.git
+
+# vscode
+.vscode
+
+# project file
+node_modules
+.eslintrc.yml
+.prettierrc.yml
+.editorconfig
+.gitignore
+package-lock.json
+start.js
+
