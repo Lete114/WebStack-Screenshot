@@ -9,8 +9,7 @@
 
 <p align="center">
     <a href="https://github.com/Lete114/WebStack-Screenshot/releases/"><img src="https://img.shields.io/npm/v/webstack-screenshot?logo=npm" alt="Version"></a>
-    <a href="https://github.com/Lete114/WebStack-Screenshot/tree/main"><img src="https://img.shields.io/github/package-json/v/Lete114/WebStack-Screenshot/main?color=%231ab1ad&label=main" alt="dev"></a>
-    <a href="https://github.com/Lete114/WebStack-Screenshot/blob/master/LICENSE"><img src="https://img.shields.io/github/license/Lete114/WebStack-Screenshot?color=FF5531" alt="MIT License"></a>
+    <a href="https://github.com/Lete114/WebStack-Screenshot/blob/main/LICENSE"><img src="https://img.shields.io/npm/l/webstack-screenshot" alt="MIT License"></a>
 </p>
 
 ## 简介
