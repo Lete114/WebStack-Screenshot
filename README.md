@@ -74,7 +74,8 @@ npm run start:hot
 | url       |        | String  | 请求的网站 URL 地址，如果输入的是域名会自动拼接`http://`      |
 | viewport  |        | Int     | 截图 100 宽 200 高，格式`100x200`(需添加`fullPage=false`)     |
 | isMobile  | false  | Boolean | 是否是手机端                                                  |
-| timeout   | 30s    | Int     | 截图超时，`0`表示无限制                                       |
+| await     | 0      | Int     | 页面渲染完成后等待，`0`表示不等待(单位毫秒)                   |
+| timeout   | 30000  | Int     | 截图超时，`0`表示无限制(单位毫秒)                             |
 | waitUntil | load   | String  | 在什么时机触发截图，[详细请看下方另一个表格 ](#waituntil)     |
 | fullPage  | true   | Boolean | 截取完整页面(如果使用`viewport`需要将`fullPage`设置为`false`) |
 | type      | png    | String  | 图片类型，`png`、`jpeg`、`webp`                               |

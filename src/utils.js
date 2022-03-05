@@ -1,8 +1,23 @@
+const { join } = require('path')
+const chromium = require('chrome-aws-lambda')
+
 function isBoolean(value) {
   return value === 'true' || value === true ? true : false
 }
 
 module.exports = {
+  async launch() {
+    // 设置字体
+    const fontPath = join(__dirname, '../font/WenQuanDengKuanWeiMiHei-1.ttf')
+    await chromium.font(fontPath)
+
+    const chromiumOptions = {
+      args: chromium.args,
+      executablePath: await chromium.executablePath,
+      headless: chromium.headless
+    }
+    return process.env.PUPPETEER_SERVER ? {} : chromiumOptions
+  },
   goto(data) {
     const options = {}
 
@@ -11,6 +26,9 @@ module.exports = {
 
     // 超时，默认30s
     if (!isNaN(data.timeout)) options.timeout = Math.abs(data.timeout) ?? 30000
+
+    // 页面渲染完成后等待(毫秒)
+    if (!isNaN(data.await)) options.await = Math.abs(data.await) || 0
 
     // 什么模式下截图
     if (data.waitUntil) {

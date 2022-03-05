@@ -73,7 +73,8 @@ Request Method: GET | POST
 | url        |         | String  | The URL address of the requested website, if you enter a domain name it will be automatically spelled out as `http://` |
 | viewport   |         | Int     | Screenshot 100 wide by 200 high, format `100x200` (need to add `fullPage: false`)                                      |
 | isMobile   | false   | Boolean | Whether it is mobile                                                                                                   |
-| timeout    | 30s     | Int     | Screenshot timeout, `0` means no limit                                                                                 |
+| await      | 0       | Int     | How long do I wait after the page is rendered，`0` means no waiting (milliseconds)                                     |
+| timeout    | 30000   | Int     | Screenshot timeout, `0` means no limit (milliseconds)                                                                  |
 | waitUntil  | load    | String  | At what time the screenshot is triggered, [see another table below for details](#waituntil)                            |
 | fullPage   | true    | Boolean | Capture the full page (if using `viewport` you need to set `fullPage` to `false`)                                      |
 | type       | png     | String  | The image type, `png`, `jpeg`, `webp`                                                                                  |
