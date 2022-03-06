@@ -18,6 +18,10 @@ Just some simple screenshot operations, if you have any needs, or want to partic
 
 ## Quick Start
 
+### Free Deployment
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Lete114/WebStack-Screenshot/tree/Vercel)
+
 ### NPM Installation
 
 Initialize the `npm` project and install the `webstack-screenshot` library
@@ -71,6 +75,7 @@ Request Method: GET | POST
 | Properties | Default | Type    | Description                                                                                                            |
 | ---------- | ------- | ------- | ---------------------------------------------------------------------------------------------------------------------- |
 | url        |         | String  | The URL address of the requested website, if you enter a domain name it will be automatically spelled out as `http://` |
+| font       |         | String  | If the specified screenshot site appears garbled, you can specify the font `url` address with this parameter           |
 | viewport   |         | Int     | Screenshot 100 wide by 200 high, format `100x200` (need to add `fullPage: false`)                                      |
 | isMobile   | false   | Boolean | Whether it is mobile                                                                                                   |
 | await      | 0       | Int     | How long do I wait after the page is rendered，`0` means no waiting (milliseconds)                                     |

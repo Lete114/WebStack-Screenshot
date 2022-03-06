@@ -9,12 +9,18 @@ module.exports = async (req, res) => {
     if (req.url === '/favicon.ico') return res.end()
     const data = await bodyData(req)
 
+    const projectUrl =
+      'https://github.com/Lete114/WebStack-Screenshot#%E5%B1%9E%E6%80%A7'
     if (!data.url) {
-      return res.end(JSON.stringify({ msg: 'URL not detected' }))
+      return res.end(
+        JSON.stringify({
+          msg: 'URL not detected , Using parameters: ' + projectUrl
+        })
+      )
     }
 
     // 判断是服务器(Server)还是无服务器(ServerLess)，决定使用Chromium
-    const launchOpt = await launch()
+    const launchOpt = await launch(data.font)
 
     browser = await puppeteer.launch(launchOpt)
 
@@ -45,7 +51,7 @@ module.exports = async (req, res) => {
     // 关闭浏览器
     // 每次关闭浏览器后，下次再次使用会重新启动浏览器，消耗性能(消耗几百毫秒的启动时间)
     // 可直接关闭标签页来提高性能 `await page.close()`
-    // 或是保留标签页到缓存中，如果一直被请求同一个url那么直接使用缓存里的标签页(会增加服务器内存消耗，但能道极高的请求响应速度)
+    // 或是保留标签页到缓存中，如果一直被请求同一个url那么直接使用缓存里的标签页(会增加服务器内存消耗，但能得到极高的请求响应速度)
     // 如果你想优化，欢迎你PR哦~(其实我就是懒才直接关闭浏览器的)
     await browser.close()
 

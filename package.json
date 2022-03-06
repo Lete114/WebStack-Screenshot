@@ -1,6 +1,6 @@
 {
   "name": "webstack-screenshot",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "网站截图 API | Website Screenshot API ",
   "main": "index.js",
   "scripts": {
@@ -30,7 +30,7 @@
     "url": "git+https://github.com/Lete114/WebStack-Screenshot.git"
   },
   "dependencies": {
-    "body-data": "^1.0.2",
+    "body-data": "^1.0.3",
     "chrome-aws-lambda": "^10.1.0",
     "puppeteer": "^13.4.1",
     "puppeteer-core": "^13.4.1"

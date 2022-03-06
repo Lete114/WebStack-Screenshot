@@ -18,6 +18,10 @@
 
 ## 快速开始
 
+### 免费部署
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Lete114/WebStack-Screenshot/tree/Vercel)
+
 ### NPM 安装
 
 初始化`npm`项目，并且安装`webstack-screenshot`库
@@ -72,6 +76,7 @@ npm run start:hot
 | 属性      | 默认值 | 类型    | 描述                                                          |
 | --------- | ------ | ------- | ------------------------------------------------------------- |
 | url       |        | String  | 请求的网站 URL 地址，如果输入的是域名会自动拼接`http://`      |
+| font      |        | String  | 如果指定的截图网站出现乱码，你可通过该参数指定字体`url`地址   |
 | viewport  |        | Int     | 截图 100 宽 200 高，格式`100x200`(需添加`fullPage=false`)     |
 | isMobile  | false  | Boolean | 是否是手机端                                                  |
 | await     | 0      | Int     | 页面渲染完成后等待，`0`表示不等待(单位毫秒)                   |

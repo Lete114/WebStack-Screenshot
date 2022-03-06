@@ -5,24 +5,35 @@ function isBoolean(value) {
   return value === 'true' || value === true ? true : false
 }
 
-module.exports = {
-  async launch() {
-    // 设置字体
-    const fontPath = join(__dirname, '../font/WenQuanDengKuanWeiMiHei-1.ttf')
-    await chromium.font(fontPath)
+function isHttp(url) {
+  return /^https?:\/\//.test(url)
+}
 
+module.exports = {
+  async launch(fontUrl) {
+    // 设置字体: 文泉驿宽微米黑
+    const fontPath = join(__dirname, '../font/WenQuanDengKuanWeiMiHei-1.ttf')
+
+    // 判断是否是url字体
+    const font = isHttp(fontUrl) ? fontUrl : fontPath
+
+    // 使用字体
+    await chromium.font(font)
+
+    // lambda (ServerLess) 配置
     const chromiumOptions = {
       args: chromium.args,
       executablePath: await chromium.executablePath,
       headless: chromium.headless
     }
+    // 判断是服务器(Server)还是无服务器(ServerLess)
     return process.env.PUPPETEER_SERVER ? {} : chromiumOptions
   },
   goto(data) {
     const options = {}
 
     // 是否以http协议开头
-    data.url = /^https?:\/\//.test(data.url) ? data.url : 'http://' + data.url
+    data.url = isHttp(data.url) ? data.url : 'http://' + data.url
 
     // 超时，默认30s
     if (!isNaN(data.timeout)) options.timeout = Math.abs(data.timeout) ?? 30000
