@@ -4,6 +4,11 @@ const { launch, goto, screenshot, isBoolean } = require('./utils')
 
 /*eslint-disable max-statements */
 module.exports = async (req, res) => {
+  // 允许所有域
+  res.setHeader('Access-Control-Allow-Origin', '*')
+  // 返回json数据
+  res.setHeader('Content-Type', 'application/json; charset=utf-8')
+
   let browser = null
   try {
     if (req.url === '/favicon.ico') return res.end()
