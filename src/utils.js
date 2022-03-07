@@ -9,6 +9,24 @@ function isHttp(url) {
   return /^https?:\/\//.test(url)
 }
 
+function clip(data) {
+  if (!data.clip) return
+  const clip = data.clip.split(',')
+  const opt = {
+    x: clip[0],
+    y: clip[1],
+    width: clip[2],
+    height: clip[3]
+  }
+  for (const key in opt) {
+    const temp = parseInt(opt[key])
+    const isNumber = /^-?\d+$/.test(temp)
+    if (!isNumber) return
+    opt[key] = temp
+  }
+  return opt
+}
+
 module.exports = {
   async launch(fontUrl) {
     // 设置字体: 文泉驿宽微米黑
@@ -36,7 +54,14 @@ module.exports = {
     data.url = isHttp(data.url) ? data.url : 'http://' + data.url
 
     // 超时，默认30s
-    if (!isNaN(data.timeout)) options.timeout = Math.abs(data.timeout) ?? 30000
+    // if (!isNaN(data.timeout)) {
+    //   options.timeout = Math.abs(data.timeout) ?? 30000
+    // }
+    // 源码如上，为了适配低于v12.x的nodejs版本，改为如下写法
+    if (!isNaN(data.timeout)) {
+      const timeout = Math.abs(data.timeout)
+      options.timeout = timeout !== null && timeout !== void 0 ? timeout : 30000
+    }
 
     // 页面渲染完成后等待(毫秒)
     if (!isNaN(data.await)) options.await = Math.abs(data.await) || 0
@@ -80,6 +105,10 @@ module.exports = {
 
     // 截取完整页面
     if (data.fullPage) options.fullPage = isBoolean(data.fullPage)
+
+    // 截取指定坐标以及宽高
+    const clipOpt = clip(data)
+    if (clipOpt) options.clip = clipOpt
 
     return options
   },

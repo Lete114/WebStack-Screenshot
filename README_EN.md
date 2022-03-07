@@ -72,18 +72,20 @@ npm run start:hot
 
 Request Method: GET | POST
 
-| Properties | Default | Type    | Description                                                                                                            |
-| ---------- | ------- | ------- | ---------------------------------------------------------------------------------------------------------------------- |
-| url        |         | String  | The URL address of the requested website, if you enter a domain name it will be automatically spelled out as `http://` |
-| font       |         | String  | If the specified screenshot site appears garbled, you can specify the font `url` address with this parameter           |
-| viewport   |         | Int     | Screenshot 100 wide by 200 high, format `100x200` (need to add `fullPage: false`)                                      |
-| isMobile   | false   | Boolean | Whether it is mobile                                                                                                   |
-| await      | 0       | Int     | How long do I wait after the page is rendered，`0` means no waiting (milliseconds)                                     |
-| timeout    | 30000   | Int     | Screenshot timeout, `0` means no limit (milliseconds)                                                                  |
-| waitUntil  | load    | String  | At what time the screenshot is triggered, [see another table below for details](#waituntil)                            |
-| fullPage   | true    | Boolean | Capture the full page (if using `viewport` you need to set `fullPage` to `false`)                                      |
-| type       | png     | String  | The image type, `png`, `jpeg`, `webp`                                                                                  |
-| encoding   | binary  | String  | The encoding of the image, `binary`, `base64`                                                                          |
+| Properties | Default | Type    | Description                                                                                                       |
+| ---------- | ------- | ------- | ----------------------------------------------------------------------------------------------------------------- |
+| url        |         | String  | The URL of the requested website, if the domain name is entered it will be automatically spelled out as `http://` |
+| type       | png     | String  | The image type, `png`, `jpeg`, `webp`                                                                             |
+| quality    |         | Int     | Image quality between **0-100**, ignored if the image type is `png`                                               |
+| viewport   |         | Int     | Screenshot 100 wide by 200 high, format `100x200`                                                                 |
+| fullPage   | true    | Boolean | Capture the full page, if you use the `clip` property you need to set it to `false`                               |
+| isMobile   | false   | Boolean | If or not it is mobile                                                                                            |
+| await      | 0       | Int     | Wait for the page to finish rendering, `0` means no wait (in milliseconds)                                        |
+| timeout    | 30000   | Int     | Screenshot timeout, `0` means no limit (in milliseconds)                                                          |
+| encoding   | binary  | String  | Image encoding, `binary`, `base64`                                                                                |
+| clip       |         | String  | Clip the specified area, receive 4 units divided by English **comma**, `x,y,width,height`                         |
+| font       |         | String  | If the specified screenshot site is garbled, you can specify the font `url` address with this parameter           |
+| waitUntil  | load    | String  | At what time the screenshot is triggered, [see another table below for details](#waituntil)                       |
 
 ### waitUntil
 

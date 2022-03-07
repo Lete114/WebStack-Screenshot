@@ -24,6 +24,7 @@ module.exports = async (req, res) => {
 
     browser = await puppeteer.launch(launchOpt)
 
+    // 创建新的标签页
     const page = await browser.newPage()
 
     // 设置截图宽高比
