@@ -1,8 +1,13 @@
 const { join } = require('path')
 const chromium = require('chrome-aws-lambda')
+const { log } = require('console')
 
 function isBoolean(value) {
   return value === 'true' || value === true ? true : false
+}
+
+function isNumber(value) {
+  return !isNaN(value)
 }
 
 function isHttp(url) {
@@ -54,17 +59,17 @@ module.exports = {
     data.url = isHttp(data.url) ? data.url : 'http://' + data.url
 
     // 超时，默认30s
-    // if (!isNaN(data.timeout)) {
+    // if (isNumber(data.timeout)) {
     //   options.timeout = Math.abs(data.timeout) ?? 30000
     // }
     // 源码如上，为了适配低于v12.x的nodejs版本，改为如下写法
-    if (!isNaN(data.timeout)) {
+    if (isNumber(data.timeout)) {
       const timeout = Math.abs(data.timeout)
       options.timeout = timeout !== null && timeout !== void 0 ? timeout : 30000
     }
 
     // 页面渲染完成后等待(毫秒)
-    if (!isNaN(data.await)) options.await = Math.abs(data.await) || 0
+    if (isNumber(data.await)) options.await = Math.abs(data.await) || 0
 
     // 什么模式下截图
     if (data.waitUntil) {
@@ -83,7 +88,7 @@ module.exports = {
     const options = { fullPage: true }
 
     // 图片质量 `1-100` 对 `png` 类型无效
-    if (!isNaN(data.quality)) options.quality = Math.abs(data.quality)
+    if (isNumber(data.quality)) options.quality = Math.abs(data.quality)
 
     // 图片类型
     const typeOpt = {
@@ -112,5 +117,15 @@ module.exports = {
 
     return options
   },
-  isBoolean
+  cache(cache) {
+    if (cache === 'false') return
+    const sec = Math.abs(cache)
+    const daySec = 86400
+    const cacheKey = 'public, no-transform, s-maxage=$, max-age=$'
+    if (cache === void 0 || isNumber(sec)) {
+      return cacheKey.replace(/\$/g, sec || daySec)
+    }
+  },
+  isBoolean,
+  isNumber
 }

@@ -1,6 +1,6 @@
 const puppeteer = require('puppeteer')
 const bodyData = require('body-data')
-const { launch, goto, screenshot, isBoolean } = require('./utils')
+const { launch, goto, screenshot, cache, isBoolean } = require('./utils')
 
 /*eslint-disable max-statements */
 module.exports = async (req, res) => {
@@ -60,6 +60,10 @@ module.exports = async (req, res) => {
     // 或是保留标签页到缓存中，如果一直被请求同一个url那么直接使用缓存里的标签页(会增加服务器内存消耗，但能得到极高的请求响应速度)
     // 如果你想优化，欢迎你PR哦~(其实我就是懒才直接关闭浏览器的)
     await browser.close()
+
+    // 强制HTTP缓存
+    const cacheResult = cache(data.cache)
+    if (cacheResult) res.setHeader('Cache-Control', cacheResult)
 
     // 响应base64的img标签
     if (screenshotOpt.encoding === 'base64') {

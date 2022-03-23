@@ -72,20 +72,21 @@ npm run start:hot
 
 Request Method: GET | POST
 
-| Properties | Default | Type    | Description                                                                                                       |
-| ---------- | ------- | ------- | ----------------------------------------------------------------------------------------------------------------- |
-| url        |         | String  | The URL of the requested website, if the domain name is entered it will be automatically spelled out as `http://` |
-| type       | png     | String  | The image type, `png`, `jpeg`, `webp`                                                                             |
-| quality    |         | Int     | Image quality between **0-100**, ignored if the image type is `png`                                               |
-| viewport   |         | Int     | Screenshot 100 wide by 200 high, format `100x200`                                                                 |
-| fullPage   | true    | Boolean | Capture the full page, if you use the `clip` property you need to set it to `false`                               |
-| isMobile   | false   | Boolean | If or not it is mobile                                                                                            |
-| await      | 0       | Int     | Wait for the page to finish rendering, `0` means no wait (in milliseconds)                                        |
-| timeout    | 30000   | Int     | Screenshot timeout, `0` means no limit (in milliseconds)                                                          |
-| encoding   | binary  | String  | Image encoding, `binary`, `base64`                                                                                |
-| clip       |         | String  | Clip the specified area, receive 4 units divided by English **comma**, `x,y,width,height`                         |
-| font       |         | String  | If the specified screenshot site is garbled, you can specify the font `url` address with this parameter           |
-| waitUntil  | load    | String  | At what time the screenshot is triggered, [see another table below for details](#waituntil)                       |
+| Properties | Default | Type          | Description                                                                                                       |
+| ---------- | ------- | ------------- | ----------------------------------------------------------------------------------------------------------------- |
+| url        |         | String        | The URL of the requested website, if the domain name is entered it will be automatically spelled out as `http://` |
+| type       | png     | String        | The image type, `png`, `jpeg`, `webp`                                                                             |
+| cache      | 86400   | Int & Boolean | cache, default cache is 1 day, pass `false` to disable cache, pass number like:`123` to cache 123 seconds         |
+| quality    |         | Int           | Image quality between **0-100**, ignored if the image type is `png`                                               |
+| viewport   |         | Int           | Screenshot 100 wide by 200 high, format `100x200`                                                                 |
+| fullPage   | true    | Boolean       | Capture the full page, if you use the `clip` property you need to set it to `false`                               |
+| isMobile   | false   | Boolean       | If or not it is mobile                                                                                            |
+| await      | 0       | Int           | Wait for the page to finish rendering, `0` means no wait (in milliseconds)                                        |
+| timeout    | 30000   | Int           | Screenshot timeout, `0` means no limit (in milliseconds)                                                          |
+| encoding   | binary  | String        | Image encoding, `binary`, `base64`                                                                                |
+| clip       |         | String        | Clip the specified area, receive 4 units divided by English **comma**, `x,y,width,height`                         |
+| font       |         | String        | If the specified screenshot site is garbled, you can specify the font `url` address with this parameter           |
+| waitUntil  | load    | String        | At what time the screenshot is triggered, [see another table below for details](#waituntil)                       |
 
 ### waitUntil
 
