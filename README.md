@@ -80,7 +80,7 @@ npm run start:hot
 | cache     | 86400  | Int & Boolean | 缓存，默认缓存为 1 天，传入`false`禁用缓存，传入数字如:`123`则缓存 123 秒 |
 | quality   |        | Int           | 图片质量**0-100**之间，如果是图片类型是`png`则被忽略                      |
 | viewport  |        | Int           | 截图 100 宽 200 高，格式`100x200`                                         |
-| fullPage  | true   | Boolean       | 截取完整页面，如果使用`clip`属性需要手动设置为`false`                     |
+| fullPage  | false  | Boolean       | 截取完整页面                                                              |
 | isMobile  | false  | Boolean       | 是否是手机端                                                              |
 | await     | 0      | Int           | 页面渲染完成后等待，`0`表示不等待(单位毫秒)                               |
 | timeout   | 30000  | Int           | 截图超时，`0`表示无限制(单位毫秒)                                         |

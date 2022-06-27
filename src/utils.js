@@ -93,7 +93,7 @@ module.exports = {
     return options
   },
   screenshot(data) {
-    const options = { fullPage: true }
+    const options = { fullPage: false }
 
     // 图片质量 `1-100` 对 `png` 类型无效
     if (isNumber(data.quality)) options.quality = Math.abs(data.quality)

@@ -79,7 +79,7 @@ Request Method: GET | POST
 | cache      | 86400   | Int & Boolean | cache, default cache is 1 day, pass `false` to disable cache, pass number like:`123` to cache 123 seconds         |
 | quality    |         | Int           | Image quality between **0-100**, ignored if the image type is `png`                                               |
 | viewport   |         | Int           | Screenshot 100 wide by 200 high, format `100x200`                                                                 |
-| fullPage   | true    | Boolean       | Capture the full page, if you use the `clip` property you need to set it to `false`                               |
+| fullPage   | false   | Boolean       | Capture the full page                                                                                             |
 | isMobile   | false   | Boolean       | If or not it is mobile                                                                                            |
 | await      | 0       | Int           | Wait for the page to finish rendering, `0` means no wait (in milliseconds)                                        |
 | timeout    | 30000   | Int           | Screenshot timeout, `0` means no limit (in milliseconds)                                                          |
