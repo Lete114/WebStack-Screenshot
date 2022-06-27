@@ -62,11 +62,8 @@ cd WebStack-Screenshot
 # 安装依赖
 npm install
 
-# 启动服务(于下方热启动任选其一执行即可)
+# 启动服务
 npm run start
-
-# 使用热启动服务
-npm run start:hot
 ```
 
 ## 属性

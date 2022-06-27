@@ -62,10 +62,8 @@ cd WebStack-Screenshot
 # Installing Dependencies
 npm install
 
-# Start the service (just choose any one of them to execute)
+# Start service
 npm run start
-# Using Hot Start Services
-npm run start:hot
 ```
 
 ## Properties
