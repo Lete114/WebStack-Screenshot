@@ -1,6 +1,6 @@
 const { join } = require('path')
 const chromium = require('chrome-aws-lambda')
-const { log } = require('console')
+const { PUPPETEER_EXECUTABLE_PATH, PUPPETEER_SERVER } = process.env
 
 function isBoolean(value) {
   return value === 'true' || value === true ? true : false
@@ -43,14 +43,22 @@ module.exports = {
     // 使用字体
     await chromium.font(font)
 
+    // local (Server) 配置
+    const localOptions = {}
+    if (PUPPETEER_EXECUTABLE_PATH) {
+      localOptions.executablePath = PUPPETEER_EXECUTABLE_PATH
+    }
     // lambda (ServerLess) 配置
-    const chromiumOptions = {
+    const lambdaOptions = {
       args: chromium.args,
-      executablePath: await chromium.executablePath,
       headless: chromium.headless
     }
+    if (!PUPPETEER_SERVER) {
+      lambdaOptions.executablePath = await chromium.executablePath
+    }
+
     // 判断是服务器(Server)还是无服务器(ServerLess)
-    return process.env.PUPPETEER_SERVER ? {} : chromiumOptions
+    return PUPPETEER_SERVER ? localOptions : lambdaOptions
   },
   goto(data) {
     const options = {}

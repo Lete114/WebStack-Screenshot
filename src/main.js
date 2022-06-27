@@ -17,11 +17,8 @@ module.exports = async (req, res) => {
     const projectUrl =
       'https://github.com/Lete114/WebStack-Screenshot#%E5%B1%9E%E6%80%A7'
     if (!data.url) {
-      return res.end(
-        JSON.stringify({
-          msg: 'URL not detected , Using parameters: ' + projectUrl
-        })
-      )
+      const msg = { msg: 'URL not detected , Using parameters: ' + projectUrl }
+      return res.end(JSON.stringify(msg))
     }
 
     // 判断是服务器(Server)还是无服务器(ServerLess)，决定使用Chromium
