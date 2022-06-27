@@ -32,6 +32,7 @@ module.exports = async (req, res) => {
     // 设置截图宽高比
     if (data.viewport) {
       const viewport = data.viewport.split('x')
+      if (viewport.length === 1) viewport.push(viewport[0])
       data.viewport = {
         width: Math.abs(viewport[0]),
         height: Math.abs(viewport[1])
