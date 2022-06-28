@@ -1,7 +1,15 @@
 const puppeteer = require('puppeteer')
 const bodyData = require('body-data')
-const { launch, goto, screenshot, cache, isBoolean } = require('./utils')
+const {
+  isHttp,
+  launch,
+  goto,
+  screenshot,
+  cache,
+  isBoolean
+} = require('./utils')
 
+let browser, page
 /*eslint-disable max-statements */
 module.exports = async (req, res) => {
   // 允许所有域
@@ -9,7 +17,6 @@ module.exports = async (req, res) => {
   // 返回json数据
   res.setHeader('Content-Type', 'application/json; charset=utf-8')
 
-  let browser = null
   try {
     if (req.url === '/favicon.ico') return res.end()
     const data = await bodyData(req)
@@ -21,13 +28,16 @@ module.exports = async (req, res) => {
       return res.end(JSON.stringify(msg))
     }
 
+    // 是否以http协议开头
+    data.url = isHttp(data.url) ? data.url : 'http://' + data.url
+
     // 判断是服务器(Server)还是无服务器(ServerLess)，决定使用Chromium
     const launchOpt = await launch(data.font)
 
-    browser = await puppeteer.launch(launchOpt)
+    if (!browser) browser = await puppeteer.launch(launchOpt)
 
     // 创建新的标签页
-    const page = await browser.newPage()
+    page = await browser.newPage()
 
     // 设置截图宽高比
     if (data.viewport) {
@@ -51,13 +61,6 @@ module.exports = async (req, res) => {
     // 截图
     const screenshotOpt = screenshot(data) // 截图选项
     const content = await page.screenshot(screenshotOpt)
-
-    // 关闭浏览器
-    // 每次关闭浏览器后，下次再次使用会重新启动浏览器，消耗性能(消耗几百毫秒的启动时间)
-    // 可直接关闭标签页来提高性能 `await page.close()`
-    // 或是保留标签页到缓存中，如果一直被请求同一个url那么直接使用缓存里的标签页(会增加服务器内存消耗，但能得到极高的请求响应速度)
-    // 如果你想优化，欢迎你PR哦~(其实我就是懒才直接关闭浏览器的)
-    await browser.close()
 
     // 强制HTTP缓存
     const cacheResult = cache(data.cache)
@@ -86,9 +89,14 @@ module.exports = async (req, res) => {
     // eslint-disable-next-line
     console.error(error)
     res.end(JSON.stringify({ msg: 'Screenshot failed' }))
+    if (browser) {
+      browser.close()
+      browser = null
+    }
   } finally {
-    if (browser !== null) {
-      await browser.close()
+    if (page) {
+      await page.close()
+      page = null
     }
   }
 }

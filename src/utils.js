@@ -33,6 +33,9 @@ function clip(data) {
 }
 
 module.exports = {
+  isHttp,
+  isBoolean,
+  isNumber,
   async launch(fontUrl) {
     // 设置字体: 文泉驿宽微米黑
     const fontPath = join(__dirname, '../font/WenQuanDengKuanWeiMiHei-1.ttf')
@@ -62,9 +65,6 @@ module.exports = {
   },
   goto(data) {
     const options = {}
-
-    // 是否以http协议开头
-    data.url = isHttp(data.url) ? data.url : 'http://' + data.url
 
     // 超时，默认30s
     // if (isNumber(data.timeout)) {
@@ -133,7 +133,5 @@ module.exports = {
     if (cache === void 0 || isNumber(sec)) {
       return cacheKey.replace(/\$/g, sec || daySec)
     }
-  },
-  isBoolean,
-  isNumber
+  }
 }
