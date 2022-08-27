@@ -6,5 +6,8 @@
   },
   "dependencies": {
     "webstack-screenshot": "latest"
+  },
+  "engines": {
+    "node": "14.19.3"
   }
 }
