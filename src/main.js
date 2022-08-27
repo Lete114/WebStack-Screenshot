@@ -12,6 +12,8 @@ const {
 let browser, page
 /*eslint-disable max-statements */
 module.exports = async (req, res) => {
+  // eslint-disable-next-line no-console
+  console.log('NODE.js', process.version)
   // 允许所有域
   res.setHeader('Access-Control-Allow-Origin', '*')
   // 返回json数据
