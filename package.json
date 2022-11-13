@@ -1,8 +1,13 @@
 {
+  "name": "webstack-screenshot-vercel",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node index.js"
+  },
   "dependencies": {
     "webstack-screenshot": "latest"
   },
   "engines": {
-    "node": "14.19.3"
+    "node": "14.21.1"
   }
 }
