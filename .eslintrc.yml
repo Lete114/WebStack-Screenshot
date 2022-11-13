@@ -1,37 +1,44 @@
 env:
+  es6: true
   node: true
-extends: eslint:recommended
+
+extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended']
+
 parserOptions:
   ecmaVersion: latest
   sourceType: module
-rules:
-  # off   或 0 - 关闭规则
-  # warn  或 1 - 开启规则, 使用警告 程序不会退出
-  # error 或 2 - 开启规则, 使用错误 程序退出
 
-  no-console: error # 禁用console
-  no-var: error ## 禁止使用var
-  quotes: [error, single, { avoidEscape: true }] ## 使用单引号
-  indent: [error, 2, { SwitchCase: 1 }] ## 缩进必须为2格
-  comma-dangle: [error, never] ## 禁止末尾逗号
-  semi: [error, never] ## 禁止末尾有分号
-  arrow-parens: [error, always] ## 箭头函数的参数使用圆括号
-  array-bracket-spacing: [error, never] ## 禁止在数组括号内出现空格
-  brace-style: error ## 强制 one true brace style
-  camelcase: warn ## 强制属性名称为驼峰风格
-  computed-property-spacing: [error, never] ## 禁止在计算属性内使用空格
+parser: '@typescript-eslint/parser'
+
+plugins: ['@typescript-eslint']
+
+rules:
+  # off   OR 0
+  # warn  OR 1
+  # error OR 2
+  no-console: error # disable console
+  no-var: error ## disable var
+  quotes: [error, single, { avoidEscape: true }] ## Use single quotes
+  indent: [error, 2, { SwitchCase: 1 }] ## Indent two spaces
+  comma-dangle: [error, never] ## Prohibit end commas
+  semi: [error, never] ## Prohibit end semicolons
+  arrow-parens: [error, always] ## Arguments to arrow functions must be enclosed in parentheses
+  array-bracket-spacing: [error, never] ## Prohibit spaces inside the array brackets
+  brace-style: error ## Force one true brace style
+  camelcase: warn ## Force property name to hump style
+  computed-property-spacing: [error, never] ## Prohibit the use of spaces within calculated attributes
   curly: [error, multi-line] ## https://cn.eslint.org/docs/rules/curly#multi
-  eol-last: [error, always] ## 强制使用换行 (LF)
+  eol-last: [error, always] ## Forced use of line feeds (LF)
   eqeqeq: [error, smart] ## https://cn.eslint.org/docs/rules/eqeqeq#smart
-  max-depth: [error, 3] ## 强制块语句的最大可嵌套深度
-  max-len: [warn, 80] ## 强制行的最大长度
-  max-statements: [warn, 15] ## 限制函数块中的语句的最大数量
-  new-cap: [warn, { capIsNew: false }] ## 要求构造函数首字母大写
-  no-extend-native: error ## 禁止扩展原生类型
-  no-mixed-spaces-and-tabs: error ## 禁止空格和 tab 的混合缩进
-  no-trailing-spaces: error ## 禁用行尾空格
-  no-unused-vars: warn ## 禁止出现未使用过的变量
-  no-use-before-define: [error, nofunc] ## 禁止在变量定义之前使用它们
-  object-curly-spacing: [error, always] ## 不允许花括号中有空格
-  keyword-spacing: [error, { before: true, after: true }] ## 强制在关键字前后使用一致的空格
-  space-unary-ops: error ## 禁止在一元操作符之前或之后存在空格
+  max-depth: [error, 3] ## Maximum nesting depth for mandatory block statements
+  max-len: [warn, 120] ## Line feed after 120 characters
+  max-statements: [warn, 20] ## Limit the maximum number of statements in a function block
+  new-cap: [warn, { capIsNew: false }] ## Requires constructors to be initialized with capital letters
+  no-extend-native: error ## Disable extension of native types
+  no-mixed-spaces-and-tabs: error ## Disable mixed indentation of spaces and tabs
+  no-trailing-spaces: error ## Disable end-of-line spaces
+  no-unused-vars: 1 ## Prohibit the appearance of unused variables
+  no-use-before-define: [error, nofunc] ## Prohibit the use of variables before they are defined
+  object-curly-spacing: [error, always] ## No spaces in brackets allowed
+  keyword-spacing: [error, { before: true, after: true }] ## Force the use of consistent spaces before and after keywords
+  space-unary-ops: error ## Prohibit spaces before or after unary operators

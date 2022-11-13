@@ -22,32 +22,28 @@ Just some simple screenshot operations, if you have any needs, or want to partic
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Lete114/WebStack-Screenshot/tree/Vercel)
 
-### NPM Installation
-
-Initialize the `npm` project and install the `webstack-screenshot` library
+### Installation
 
 ```bash
-npm init -y
 npm install webstack-screenshot --save
 ```
 
-Create a new `server.js` file
+```js
+const webstackScreenshot = require('webstack-screenshot')
+
+webstackScreenshot({ url: 'https://example.com' }).then((buffer) => {
+  console.log('buffer', buffer)
+})
+
+webstackScreenshot({ url: 'https://example.com', encoding: 'base64' }).then((base64) => {
+  console.log('base64', base64)
+})
+```
+
+### ServerLess
 
 ```js
-// server.js
-// Server Deployment using server
-// Serverless deployments use main
-const { server, main } = require('webstack-screenshot')
-
-// Server call the server() function directly to run
-// The default service port number is: 6870
-// You can pass in the port number directly, e.g.: server(6870)
-// You can specify the environment variable PORT to specify the port number
-// Port priority: process.env.PORT ---> PORT ---> 6870
-server()
-
-// Serverless Just expose the main() function to the serverless
-module.exports = main
+module.exports = require('webstack-screenshot/dist/src/serverless')
 ```
 
 ### Clone Warehouse

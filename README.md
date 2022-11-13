@@ -22,32 +22,28 @@
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Lete114/WebStack-Screenshot/tree/Vercel)
 
-### NPM 安装
-
-初始化`npm`项目，并且安装`webstack-screenshot`库
+### 安装
 
 ```bash
-npm init -y
 npm install webstack-screenshot --save
 ```
 
-新建`server.js`文件
+```js
+const webstackScreenshot = require('webstack-screenshot')
+
+webstackScreenshot({ url: 'https://example.com' }).then((buffer) => {
+  console.log('buffer', buffer)
+})
+
+webstackScreenshot({ url: 'https://example.com', encoding: 'base64' }).then((base64) => {
+  console.log('base64', base64)
+})
+```
+
+### ServerLess
 
 ```js
-// server.js
-// 服务器(Server) 部署使用 server
-// 无服务器(ServerLess) 部署使用 main
-const { server, main } = require('webstack-screenshot')
-
-// 服务器(Server) 直接调用 server() 函数即可运行
-// 服务端口号默认为: 6870
-// 可直接传入端口号指定，如: server(6870)
-// 可指定环境变量 PORT 来指定端口号
-// 端口优先级: process.env.PORT ---> PORT ---> 6870
-server()
-
-// 无服务器(ServerLess) 暴露 main() 函数给无服务器即可
-module.exports = main
+module.exports = require('webstack-screenshot/dist/src/serverless')
 ```
 
 ### 克隆仓库
