@@ -58,7 +58,7 @@ export = async function (data: typeOptions): Promise<string | Buffer> {
 
     // 截图
     const screenshotOpt = screenshot(data) // 截图选项
-    return await page.screenshot(screenshotOpt)
+    return (await page.screenshot(screenshotOpt)) as Buffer | string
   } catch (error) {
     // eslint-disable-next-line
     console.error(error)

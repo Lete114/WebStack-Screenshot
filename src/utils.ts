@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { join } from 'path'
+import { existsSync } from 'fs'
 import chromium from 'chrome-aws-lambda'
 import { PuppeteerLifeCycleEvent, ScreenshotClip, ScreenshotOptions } from 'puppeteer'
 
@@ -37,7 +38,8 @@ export function clip(data: { [key: string]: string }) {
 
 export async function launch(fontUrl: any) {
   // 设置字体: 文泉驿宽微米黑
-  const fontPath = join(__dirname, '../font/WenQuanDengKuanWeiMiHei-1.ttf')
+  let fontPath = join(__dirname, '../font/WenQuanDengKuanWeiMiHei-1.ttf')
+  fontPath = existsSync(fontPath) ? fontPath : join(__dirname, '../../font/WenQuanDengKuanWeiMiHei-1.ttf')
 
   // 判断是否是url字体
   const font = isHttp(fontUrl) ? fontUrl : fontPath
