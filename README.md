@@ -10,6 +10,7 @@
 <p align="center">
     <a href="https://github.com/Lete114/WebStack-Screenshot/releases/"><img src="https://img.shields.io/npm/v/webstack-screenshot?logo=npm" alt="Version"></a>
     <a href="https://github.com/Lete114/WebStack-Screenshot/blob/main/LICENSE"><img src="https://img.shields.io/npm/l/webstack-screenshot" alt="MIT License"></a>
+    <img src="https://visitor_badge.deta.dev/?id=github.WebStack-Screenshot" alt="visitor_badge">
 </p>
 
 ## 简介
