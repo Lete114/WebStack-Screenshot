@@ -1,6 +1,6 @@
 {
   "name": "webstack-screenshot",
-  "version": "2.0.0-beta.2",
+  "version": "2.0.0-beta.3",
   "description": "📸网站截图 API | Website Screenshot API ",
   "main": "dist/src/main.js",
   "scripts": {
