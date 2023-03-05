@@ -76,7 +76,7 @@ npm run start
 | viewport  |        | Int           | 截图 100 宽 200 高，格式`100x200`                                         |
 | fullPage  | false  | Boolean       | 截取完整页面                                                              |
 | isMobile  | false  | Boolean       | 是否是手机端                                                              |
-| await     | 0      | Int           | 页面渲染完成后等待，`0`表示不等待(单位毫秒)                               |
+| await     | 1000   | Int           | 页面渲染完成后等待                                                        |
 | timeout   | 30000  | Int           | 截图超时，`0`表示无限制(单位毫秒)                                         |
 | encoding  | binary | String        | 图片编码，`binary`、`base64`                                              |
 | clip      |        | String        | 剪切指定区域，接收 4 个单位以英文**逗号**分割分别是`x,y,width,height`     |

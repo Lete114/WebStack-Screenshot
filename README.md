@@ -75,7 +75,7 @@ Request Method: GET | POST
 | viewport   |         | Int           | Screenshot 100 wide by 200 high, format `100x200`                                                                 |
 | fullPage   | false   | Boolean       | Capture the full page                                                                                             |
 | isMobile   | false   | Boolean       | If or not it is mobile                                                                                            |
-| await      | 0       | Int           | Wait for the page to finish rendering, `0` means no wait (in milliseconds)                                        |
+| await      | 1000    | Int           | Wait for the page to finish rendering                                                                             |
 | timeout    | 30000   | Int           | Screenshot timeout, `0` means no limit (in milliseconds)                                                          |
 | encoding   | binary  | String        | Image encoding, `binary`, `base64`                                                                                |
 | clip       |         | String        | Clip the specified area, receive 4 units divided by English **comma**, `x,y,width,height`                         |
