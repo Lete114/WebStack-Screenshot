@@ -7,8 +7,8 @@
     "build": "tsc",
     "start": "ts-node ./src/server.ts",
     "start:hot": "nodemon ./src/server.ts",
-    "lint": "eslint . && prettier --check .",
-    "lint:fix": "eslint --fix . && prettier --check --write ."
+    "lint": "eslint src && prettier --check src",
+    "lint:fix": "eslint --fix src && prettier --check --write src"
   },
   "keywords": [
     "webstack",
@@ -21,11 +21,10 @@
     "img",
     "image"
   ],
-  "author": "Lete乐特",
+  "author": "Lete <me@imlete.cn> (https://blog.imlete.cn)",
   "license": "MIT",
   "files": [
-    "dist",
-    "font"
+    "dist"
   ],
   "bugs": {
     "url": "https://github.com/Lete114/WebStack-Screenshot/issues"
