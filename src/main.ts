@@ -1,25 +1,10 @@
-import puppeteer, { Browser, Page, PuppeteerLifeCycleEvent, ScreenshotClip, Viewport } from 'puppeteer'
-import { isHttp, launch, goto, screenshot, isBoolean } from './utils'
-
-type typeOptions = {
-  url: string
-  type: 'png' | 'jpeg' | 'webp'
-  cache: number | boolean
-  quality: number
-  viewport: string
-  fullPage: boolean
-  isMobile: boolean
-  await: number
-  timeout: number
-  encoding: 'binary' | 'base64'
-  clip: ScreenshotClip
-  font: string
-  waitUntil: PuppeteerLifeCycleEvent
-}
+import puppeteer, { Browser, Page, PuppeteerLifeCycleEvent, Viewport } from 'puppeteer'
+import { TtypeOptions } from './types'
+import { isHttp, launch, goto, screenshot, isBoolean, setFont } from './utils'
 
 let browser: Browser | null, page: Page | null
 // eslint-disable-next-line max-statements, @typescript-eslint/no-explicit-any
-export = async function (data: typeOptions): Promise<string | Buffer> {
+export = async function (data: TtypeOptions): Promise<string | Buffer> {
   try {
     // 是否以 http 协议开头
     data.url = isHttp(data.url) ? data.url : 'http://' + data.url
@@ -53,11 +38,11 @@ export = async function (data: typeOptions): Promise<string | Buffer> {
       }
     )
 
-    // 页面渲染完成后等待(毫秒)
-    await new Promise((r) => setTimeout(r, gotoOpt.await as number))
-
     // 截图
     const screenshotOpt = screenshot(data) // 截图选项
+    await setFont(page, data.font)
+    // 页面渲染完成后等待(毫秒)
+    await new Promise((r) => setTimeout(r, (gotoOpt.await || 0) + 1000))
     return (await page.screenshot(screenshotOpt)) as Buffer | string
   } catch (error) {
     // eslint-disable-next-line

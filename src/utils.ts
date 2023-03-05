@@ -1,6 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { tmpdir } from 'os'
+import { join } from 'path'
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
+import http from 'http'
+import https from 'https'
 import chromium from 'chrome-aws-lambda'
-import { PuppeteerLifeCycleEvent, ScreenshotClip, ScreenshotOptions, Viewport } from 'puppeteer'
+import { Page, PuppeteerLifeCycleEvent, ScreenshotClip, ScreenshotOptions } from 'puppeteer'
+import { TlaunchOptions } from './types'
+
+const TMP_DIR_PATH = join(tmpdir(), 'WebStack-Screenshot')
+if (!existsSync(TMP_DIR_PATH)) mkdirSync(TMP_DIR_PATH, { recursive: true })
 
 export function isBoolean(value: string | boolean) {
   return value === 'true' || value === true ? true : false
@@ -14,12 +23,56 @@ export function isHttp(url: string) {
   return /^https?:\/\//.test(url)
 }
 
+export const isValidKey = (key: string, object: object): key is keyof typeof object => key in object
+
 export function deepClone(data: any): { [key: string]: any } {
   try {
     return JSON.parse(JSON.stringify(data))
   } catch (error) {
     return {}
   }
+}
+
+/**
+ * request
+ * @param {string} url
+ */
+export function request(url: string) {
+  const protocol = url.startsWith('https') ? https : http
+
+  return new Promise<Buffer>((resolve, reject) => {
+    const req = protocol.get(url, (res) => {
+      if (res.statusCode !== 200) {
+        reject(new Error(`Failed to download file: ${res.statusMessage}`))
+        return
+      }
+      const data: any[] = []
+      res.on('data', (chunk) => {
+        data.push(chunk)
+      })
+
+      res.on('end', () => {
+        const buffer = Buffer.concat(data)
+        resolve(buffer)
+      })
+    })
+    req.on('error', (error) => {
+      reject(error)
+    })
+
+    req.end()
+  })
+}
+
+/**
+ * download file
+ * @param {string} url
+ * @param {string} filePath
+ */
+export async function download(url: string, filePath: string) {
+  const buffer = await request(url)
+  writeFileSync(filePath, buffer)
+  return buffer
 }
 
 export function clip(data: { [key: string]: string }) {
@@ -34,21 +87,15 @@ export function clip(data: { [key: string]: string }) {
   return opt
 }
 
-interface Ioptions {
-  args?: string[]
-  headless?: boolean
-  executablePath?: string
-  defaultViewport?: Viewport
-}
 export async function launch() {
-  const options: Ioptions = {
+  const options: TlaunchOptions = {
     args: chromium.args,
     defaultViewport: chromium.defaultViewport
   }
 
   // lambda (ServerLess) 配置
   const lambdaOptions = options
-  if (!process.env.PUPPETEER_SCREENSHOT_SERVER) {
+  if (!process.env.PUPPETEER_SERVER) {
     process.env.FUNCTION_NAME = process.env.FUNCTION_NAME ? process.env.FUNCTION_NAME : 'Screenshot'
     lambdaOptions.headless = chromium.headless
     lambdaOptions.executablePath = await chromium.executablePath
@@ -56,7 +103,7 @@ export async function launch() {
   }
 
   // local (Server) 配置
-  const localOptions: Ioptions = options
+  const localOptions: TlaunchOptions = options
   if (process.env.PUPPETEER_EXECUTABLE_PATH) {
     localOptions.executablePath = process.env.PUPPETEER_EXECUTABLE_PATH
   }
@@ -130,4 +177,43 @@ export function cache(cache: number | boolean) {
   if (cache == void 0) return cacheKey.replace(/\$/g, daySec as unknown as string)
 
   if (isNumber(sec)) return cacheKey.replace(/\$/g, sec as unknown as string)
+}
+
+export async function getFont(url: string, fontName: string) {
+  const fontPath = join(TMP_DIR_PATH, fontName)
+  if (existsSync(fontPath)) {
+    return readFileSync(fontPath, { encoding: 'base64' })
+  }
+  const buffer = await download(url, fontPath)
+  return buffer.toString('base64')
+}
+
+export async function setFont(page: Page, fontUrl: string) {
+  if (!isHttp(fontUrl)) return
+  const MIME_TYPES = {
+    ttf: 'font/ttf',
+    woff: 'font/woff',
+    woff2: 'font/woff2',
+    otf: 'font/otf'
+  }
+
+  const { pathname } = new URL(fontUrl)
+  const fontName = pathname.split('/').at(-1) || ''
+  const [, ext] = fontName.split('.')
+
+  const mimeType = isValidKey(ext, MIME_TYPES) && MIME_TYPES[ext]
+  const base64 = await getFont(fontUrl, fontName)
+  const style = `
+    @font-face {
+      font-family: 'WebStack-Screenshot';
+      src: url(data:${mimeType};base64,${base64});
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    body {
+      font-family: 'WebStack-Screenshot', sans-serif;
+    }
+  `
+  if (mimeType) await page.addStyleTag({ content: style })
 }
