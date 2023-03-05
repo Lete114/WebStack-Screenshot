@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { join } from 'path'
-import { existsSync } from 'fs'
 import chromium from 'chrome-aws-lambda'
-import { PuppeteerLifeCycleEvent, ScreenshotClip, ScreenshotOptions } from 'puppeteer'
+import { PuppeteerLifeCycleEvent, ScreenshotClip, ScreenshotOptions, Viewport } from 'puppeteer'
 
 export function isBoolean(value: string | boolean) {
   return value === 'true' || value === true ? true : false
@@ -36,37 +34,34 @@ export function clip(data: { [key: string]: string }) {
   return opt
 }
 
-export async function launch(fontUrl: any) {
-  // 设置字体: 文泉驿宽微米黑
-  let fontPath = join(__dirname, '../font/WenQuanDengKuanWeiMiHei-1.ttf')
-  fontPath = existsSync(fontPath) ? fontPath : join(__dirname, '../../font/WenQuanDengKuanWeiMiHei-1.ttf')
+interface Ioptions {
+  args?: string[]
+  headless?: boolean
+  executablePath?: string
+  defaultViewport?: Viewport
+}
+export async function launch() {
+  const options: Ioptions = {
+    args: chromium.args,
+    defaultViewport: chromium.defaultViewport
+  }
 
-  // 判断是否是url字体
-  const font = isHttp(fontUrl) ? fontUrl : fontPath
-
-  // 使用字体
-  await chromium.font(font)
+  // lambda (ServerLess) 配置
+  const lambdaOptions = options
+  if (!process.env.PUPPETEER_SCREENSHOT_SERVER) {
+    process.env.FUNCTION_NAME = process.env.FUNCTION_NAME ? process.env.FUNCTION_NAME : 'Screenshot'
+    lambdaOptions.headless = chromium.headless
+    lambdaOptions.executablePath = await chromium.executablePath
+    return lambdaOptions
+  }
 
   // local (Server) 配置
-  const localOptions: { executablePath?: string } = {}
+  const localOptions: Ioptions = options
   if (process.env.PUPPETEER_EXECUTABLE_PATH) {
     localOptions.executablePath = process.env.PUPPETEER_EXECUTABLE_PATH
   }
 
-  // lambda (ServerLess) 配置
-  const lambdaOptions: {
-    args: string[]
-    headless: boolean
-    executablePath?: string
-  } = {
-    args: chromium.args,
-    headless: chromium.headless
-  }
-  if (!process.env.PUPPETEER_SERVER) {
-    lambdaOptions.executablePath = await chromium.executablePath
-  }
-  // 判断是服务器(Server)还是无服务器(ServerLess)
-  return process.env.PUPPETEER_SERVER ? localOptions : lambdaOptions
+  return localOptions
 }
 
 export function goto(data: { [x: string]: any; timeout?: any; await?: any; waitUntil?: any }) {
