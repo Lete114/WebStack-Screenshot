@@ -8,6 +8,6 @@
     "webstack-screenshot": "latest"
   },
   "engines": {
-    "node": "14.21.1"
+    "node": "14"
   }
 }
