@@ -198,7 +198,7 @@ export async function setFont(page: Page, fontUrl: string) {
   }
 
   const { pathname } = new URL(fontUrl)
-  const fontName = pathname.split('/').at(-1) || ''
+  const fontName = pathname.split('/').slice(-1)[0] || ''
   const [, ext] = fontName.split('.')
 
   const mimeType = isValidKey(ext, MIME_TYPES) && MIME_TYPES[ext]
