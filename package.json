@@ -6,8 +6,5 @@
   },
   "dependencies": {
     "webstack-screenshot": "latest"
-  },
-  "engines": {
-    "node": "14"
   }
 }
