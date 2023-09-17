@@ -1,22 +1,22 @@
-import puppeteer, { Browser, Page, PuppeteerLifeCycleEvent, Viewport } from 'puppeteer'
+import type { Browser, Page, PuppeteerLifeCycleEvent, Viewport } from 'puppeteer-core'
+import puppeteer from 'puppeteer-core'
 import { TtypeOptions } from './types'
-import { isHttp, launch, goto, screenshot, isBoolean, setFont } from './utils'
+import { isHttp, launch, goto, screenshot, isBoolean } from './utils'
 
 let browser: Browser | null, page: Page | null
 // eslint-disable-next-line max-statements, @typescript-eslint/no-explicit-any
 export = async function (data: TtypeOptions): Promise<string | Buffer> {
   try {
-    // 是否以 http 协议开头
+    // Whether or not it starts with the http protocol
     data.url = isHttp(data.url) ? data.url : 'http://' + data.url
 
-    // 判断是服务器(Server)还是无服务器(ServerLess)，决定使用Chromium
     const launchOpt = await launch()
     if (!browser) browser = await puppeteer.launch(launchOpt)
 
-    // 创建新的标签页
+    // Creating a new tab
     page = await browser.newPage()
 
-    // 设置截图宽高比
+    // Setting the screenshot aspect ratio
     if (data.viewport) {
       const viewport = data.viewport.split('x')
       if (viewport.length === 1) viewport.push(viewport[0])
@@ -25,11 +25,11 @@ export = async function (data: TtypeOptions): Promise<string | Buffer> {
         height: parseInt(viewport[1]),
         isMobile: isBoolean(data.isMobile)
       } as unknown as string
-      await page.setViewport(data.viewport as unknown as Viewport) // 设置页面大小
+      await page.setViewport(data.viewport as unknown as Viewport) // Setting the page size
     }
 
-    // 打开网站
-    const gotoOpt = goto(data) // 打开网站选项
+    // open a website
+    const gotoOpt = goto(data)
     await page.goto(
       data.url,
       gotoOpt as {
@@ -38,10 +38,8 @@ export = async function (data: TtypeOptions): Promise<string | Buffer> {
       }
     )
 
-    // 截图
-    const screenshotOpt = screenshot(data) // 截图选项
-    await setFont(page, data.font)
-    // 页面渲染完成后等待(毫秒)
+    const screenshotOpt = screenshot(data)
+    // Wait after page rendering is complete (milliseconds)
     await new Promise((r) => setTimeout(r, (gotoOpt.await || 0) + 1000))
     return (await page.screenshot(screenshotOpt)) as Buffer | string
   } catch (error) {

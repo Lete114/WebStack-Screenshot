@@ -1,7 +1,6 @@
 import http from 'http'
 import serverless from './serverless'
 
-process.env.PUPPETEER_SERVER = 'true'
 const PORT = process.env.WEBSTACK_SCREENSHOT_PORT || process.env.PORT || 6870
 const server = http.createServer(serverless)
 server.listen(PORT, () => {

@@ -1,4 +1,4 @@
-import { PuppeteerLifeCycleEvent, ScreenshotClip, Viewport } from 'puppeteer'
+import { PuppeteerLaunchOptions,PuppeteerLifeCycleEvent, ScreenshotClip } from 'puppeteer-core'
 
 export type TtypeOptions = {
   url: string
@@ -16,9 +16,4 @@ export type TtypeOptions = {
   waitUntil: PuppeteerLifeCycleEvent
 }
 
-export type TlaunchOptions = {
-  args?: string[]
-  headless?: boolean
-  executablePath?: string
-  defaultViewport?: Viewport
-}
+export type TlaunchOptions = PuppeteerLaunchOptions
