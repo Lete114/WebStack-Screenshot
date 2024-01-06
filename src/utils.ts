@@ -4,7 +4,7 @@ import { join } from 'path'
 import { existsSync, mkdirSync } from 'fs'
 import type { PuppeteerLifeCycleEvent, ScreenshotClip, ScreenshotOptions } from 'puppeteer-core'
 import { args } from './args'
-import { TlaunchOptions } from './types'
+import { TlaunchOptions, TtypeOptions } from './types'
 
 const { WEBSTACK_SCREENSHOT_SERVERLESS, WEBSTACK_SCREENSHOT_FONTS, WEBSTACK_SCREENSHOT_PUPPETEER_EXECUTABLE_PATH } =
   process.env
@@ -34,16 +34,15 @@ export function deepClone(data: any): { [key: string]: any } {
   }
 }
 
-export function clip(data: { [key: string]: string }) {
-  if (!data.clip) return
-  const clip = data.clip.split(',')
-  const opt: ScreenshotClip = {
-    x: parseInt(clip[0]),
-    y: parseInt(clip[1]),
-    width: parseInt(clip[2]),
-    height: parseInt(clip[3])
+export function parseClip(clip:string): ScreenshotClip {
+  const [x = '0', y = '0', width = '0', height = '0'] = clip.split(',').map((part) => part.trim())
+
+  return {
+    x: parseInt(x),
+    y: parseInt(y),
+    width: parseInt(width),
+    height: parseInt(height)
   }
-  return opt
 }
 
 export async function launch() {
@@ -102,29 +101,23 @@ export function goto(data: { [x: string]: any; timeout?: any; await?: any; waitU
   return options
 }
 
-export function screenshot(data: { [key: string]: any }) {
+export function screenshot(data: TtypeOptions) {
+  const { quality = 80, type = 'jpeg', encoding = 'binary', fullPage = false, clip } = data
   const options: ScreenshotOptions = {}
 
   // Image quality between 0-100, ignored if the image type is png
-  options.quality = 50
-  if (isNumber(data.quality)) options.quality = Math.abs(data.quality)
+  options.quality = quality
+  options.type = type
 
-  // Image type
-  const types = ['jpeg', 'png', 'webp']
-  options.type = types.includes(data.type) ? data.type : types[0]
-
-  // Image encoding
-  const encodings = ['binary', 'base64']
-
-  options.encoding = encodings.includes(data.encoding) ? data.encoding : encodings[0]
+  options.encoding = encoding
 
   // Screenshot of the full page
-  options.fullPage = isBoolean(data.fullPage)
+  options.fullPage = fullPage
 
   // Intercepts the specified coordinates and width and height
-  const clipOpt = clip(data)
-  if (clipOpt) options.clip = clipOpt
-
+  if (clip){
+    options.clip = parseClip(clip)
+  }
   return options
 }
 
