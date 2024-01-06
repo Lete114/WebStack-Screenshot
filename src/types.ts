@@ -3,7 +3,7 @@ import { PuppeteerLaunchOptions,PuppeteerLifeCycleEvent, ScreenshotClip } from '
 export type TtypeOptions = {
   url: string
   type?: 'png' | 'jpeg' | 'webp'
-  cache: number | boolean
+  cache?: number | boolean
   quality?: number
   viewport: string
   fullPage?: boolean
