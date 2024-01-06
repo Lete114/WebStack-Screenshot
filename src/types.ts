@@ -5,7 +5,7 @@ export type TtypeOptions = {
   type?: 'png' | 'jpeg' | 'webp'
   cache?: number | boolean
   quality?: number
-  viewport: string
+  viewport?: string
   fullPage?: boolean
   isMobile: boolean
   await?: number

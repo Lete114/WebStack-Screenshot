@@ -19,15 +19,20 @@ export async function webstackScreenshot(data: TtypeOptions): Promise<string | B
 
     // Setting the screenshot aspect ratio
     if (data.viewport) {
-      const viewport = data.viewport.split('x')
-      if (viewport.length === 1) viewport.push(viewport[0])
-      data.viewport = {
-        width: parseInt(viewport[0]),
-        height: parseInt(viewport[1]),
-        isMobile: isBoolean(data.isMobile)
-      } as unknown as string
-      await page.setViewport(data.viewport as unknown as Viewport) // Setting the page size
+      const [widthStr, heightStr] = data.viewport.split('x').map((str) => str.trim())
+      const width = parseInt(widthStr)
+      const height = parseInt(heightStr || widthStr) // Use width as height if height is not provided
+      if (!isNaN(width) && !isNaN(height)) {
+        const viewport: Viewport = {
+          width,
+          height,
+          isMobile: isBoolean(data.isMobile)
+        }
+
+        await page.setViewport(viewport) // Setting the page size
+      }
     }
+
 
     // open a website
     const gotoOpt = goto(data)
