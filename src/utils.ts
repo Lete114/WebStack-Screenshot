@@ -111,16 +111,19 @@ export function screenshot(data: TtypeOptions) {
   return options
 }
 
-export function cache(cache: number | boolean) {
+
+export function cache(cache: number | boolean): string | undefined {
   // Do not use http forced caching
-  if ((cache as unknown as string) === 'false') return
+  // catch is false or cache is zero
+  if (cache === false || cache === 0) return undefined
 
   const sec = Math.abs(cache as number)
   const daySec = 86400
   const cacheKey = 'public, no-transform, s-maxage=$, max-age=$'
 
-  // eslint-disable-next-line eqeqeq
-  if (cache == void 0) return cacheKey.replace(/\$/g, daySec as unknown as string)
+  if (!cache) return cacheKey.replace(/\$/g, daySec.toString())
 
-  if (isNumber(sec)) return cacheKey.replace(/\$/g, sec as unknown as string)
+  if (isNumber(sec)) return cacheKey.replace(/\$/g, sec.toString())
+
+  return undefined
 }
