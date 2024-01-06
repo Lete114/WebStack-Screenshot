@@ -8,12 +8,12 @@ export type TtypeOptions = {
   viewport: string
   fullPage?: boolean
   isMobile: boolean
-  await: number
-  timeout: number
+  await?: number
+  timeout?: number
   encoding?: 'binary' | 'base64'
   clip?: string
   font: string
-  waitUntil: PuppeteerLifeCycleEvent
+  waitUntil?: PuppeteerLifeCycleEvent
 }
 
 export type TlaunchOptions = PuppeteerLaunchOptions

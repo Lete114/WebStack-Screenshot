@@ -34,7 +34,7 @@ export function deepClone(data: any): { [key: string]: any } {
   }
 }
 
-export function parseClip(clip:string): ScreenshotClip {
+export function parseClip(clip: string): ScreenshotClip {
   const [x = '0', y = '0', width = '0', height = '0'] = clip.split(',').map((part) => part.trim())
 
   return {
@@ -78,25 +78,15 @@ export async function launch() {
   return localOptions
 }
 
-export function goto(data: { [x: string]: any; timeout?: any; await?: any; waitUntil?: any }) {
-  const options: { timeout?: number; await?: number; waitUntil?: PuppeteerLifeCycleEvent } = {}
 
-  // Timeout, default 30s
-  if (isNumber(data.timeout)) {
-    options.timeout = Math.abs(data.timeout) ?? 30000
+export type GotoType = Pick<TtypeOptions, 'await' | 'waitUntil' | 'timeout'>;
+
+export function goto(data: GotoType): GotoType {
+  const options: GotoType = {
+    timeout: data.timeout ?? 30000,
+    await: data.await || 0,
+    waitUntil: data.waitUntil ?? 'load'
   }
-
-  // Wait after the page is rendered (milliseconds)
-  if (isNumber(data.await)) options.await = Math.abs(data.await) || 0
-
-  // When do you trigger the screenshot?
-  const waitUntils = [
-    'load', // When the load event is triggered
-    'domcontentloaded', // On DOMContentLoaded event trigger
-    'networkidle0', // When there are no website requests within 500ms
-    'networkidle2' // When there are only 2 requests within 500ms
-  ]
-  options.waitUntil = waitUntils.includes(data.waitUntil) ? data.waitUntil : waitUntils[0]
 
   return options
 }
@@ -115,7 +105,7 @@ export function screenshot(data: TtypeOptions) {
   options.fullPage = fullPage
 
   // Intercepts the specified coordinates and width and height
-  if (clip){
+  if (clip) {
     options.clip = parseClip(clip)
   }
   return options
