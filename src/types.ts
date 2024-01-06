@@ -2,16 +2,16 @@ import { PuppeteerLaunchOptions,PuppeteerLifeCycleEvent, ScreenshotClip } from '
 
 export type TtypeOptions = {
   url: string
-  type: 'png' | 'jpeg' | 'webp'
+  type?: 'png' | 'jpeg' | 'webp'
   cache: number | boolean
-  quality: number
+  quality?: number
   viewport: string
-  fullPage: boolean
+  fullPage?: boolean
   isMobile: boolean
   await: number
   timeout: number
-  encoding: 'binary' | 'base64'
-  clip: ScreenshotClip
+  encoding?: 'binary' | 'base64'
+  clip?: string
   font: string
   waitUntil: PuppeteerLifeCycleEvent
 }

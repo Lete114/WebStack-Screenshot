@@ -2,10 +2,11 @@ import type { Browser, Page, PuppeteerLifeCycleEvent, Viewport } from 'puppeteer
 import puppeteer from 'puppeteer-core'
 import { TtypeOptions } from './types'
 import { isHttp, launch, goto, screenshot, isBoolean } from './utils'
+export { TtypeOptions } from './types'
 
 let browser: Browser | null, page: Page | null
 // eslint-disable-next-line max-statements, @typescript-eslint/no-explicit-any
-export = async function (data: TtypeOptions): Promise<string | Buffer> {
+export async function webstackScreenshot(data: TtypeOptions): Promise<string | Buffer> {
   try {
     // Whether or not it starts with the http protocol
     data.url = isHttp(data.url) ? data.url : 'http://' + data.url
