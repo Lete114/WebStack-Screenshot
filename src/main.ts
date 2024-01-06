@@ -38,10 +38,7 @@ export async function webstackScreenshot(data: TtypeOptions): Promise<string | B
     const gotoOpt = goto(data)
     await page.goto(
       data.url,
-      gotoOpt as {
-        timeout: number
-        waitUntil: PuppeteerLifeCycleEvent
-      }
+      gotoOpt
     )
 
     const screenshotOpt = screenshot(data)

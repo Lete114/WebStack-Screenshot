@@ -2,7 +2,7 @@
 import { tmpdir } from 'os'
 import { join } from 'path'
 import { existsSync, mkdirSync } from 'fs'
-import type { PuppeteerLifeCycleEvent, ScreenshotClip, ScreenshotOptions } from 'puppeteer-core'
+import type { ScreenshotClip, ScreenshotOptions } from 'puppeteer-core'
 import { args } from './args'
 import { TlaunchOptions, TtypeOptions } from './types'
 
