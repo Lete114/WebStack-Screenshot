@@ -80,7 +80,7 @@ Request Method: GET | POST
 | type       | jpeg      | String        | The image type, `png`, `jpeg`, `webp`                                                                             |
 | cache      | 86400     | Int & Boolean | cache, default cache is 1 day, pass `false` to disable cache, pass number like:`123` to cache 123 seconds         |
 | quality    | 50        | Int           | Image quality between **0-100**, ignored if the image type is `png`                                               |
-| viewport   | 1080x1920 | Int           | Screenshot 100 wide by 200 high, format `100x200`                                                                 |
+| viewport   | `{width: 1080,height: 1920,isMobile: false}` | String \| Viewport           | Set the screen window size                                                                 |
 | fullPage   | false     | Boolean       | Capture the full page                                                                                             |
 | isMobile   | false     | Boolean       | If or not it is mobile                                                                                            |
 | await      | 1000      | Int           | Wait for the page to finish rendering                                                                             |

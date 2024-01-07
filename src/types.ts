@@ -1,11 +1,11 @@
-import { PuppeteerLaunchOptions,PuppeteerLifeCycleEvent, ScreenshotClip } from 'puppeteer-core'
+import { PuppeteerLaunchOptions, PuppeteerLifeCycleEvent, type Viewport } from 'puppeteer-core'
 
 export type TtypeOptions = {
   url: string
   type?: 'png' | 'jpeg' | 'webp'
   cache?: number | boolean
   quality?: number
-  viewport?: string
+  viewport?: string | Viewport
   fullPage?: boolean
   isMobile?: boolean
   await?: number

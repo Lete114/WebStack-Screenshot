@@ -2,7 +2,7 @@
 import { tmpdir } from 'os'
 import { join } from 'path'
 import { existsSync, mkdirSync } from 'fs'
-import type { ScreenshotClip, ScreenshotOptions } from 'puppeteer-core'
+import type { ScreenshotClip, ScreenshotOptions, Viewport } from 'puppeteer-core'
 import { args } from './args'
 import { TlaunchOptions, TtypeOptions } from './types'
 
@@ -24,6 +24,13 @@ export function isHttp(url: string) {
   return /^https?:\/\//.test(url)
 }
 
+export function isString(value: any): boolean {
+  return typeof value === 'string'
+}
+
+export function isObject(value: any): boolean {
+  return typeof value === 'object' && value !== null
+}
 export const isValidKey = (key: string, object: object): key is keyof typeof object => key in object
 
 export function deepClone(data: any): { [key: string]: any } {
@@ -126,4 +133,12 @@ export function cache(cache: number | boolean | undefined): string | undefined {
   if (isNumber(sec)) return cacheKey.replace(/\$/g, sec.toString())
 
   return undefined
+}
+
+export function parseViewportString(viewportString: string): Viewport | null {
+  const [widthStr, heightStr] = viewportString.split('x').map((str) => str.trim())
+  const width = parseInt(widthStr)
+  const height = parseInt(heightStr || widthStr)
+
+  return (!isNaN(width) && !isNaN(height)) ? { width, height } : null
 }

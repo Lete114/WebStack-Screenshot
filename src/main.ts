@@ -1,13 +1,20 @@
 import type { Browser, Page, Viewport } from 'puppeteer-core'
 import puppeteer from 'puppeteer-core'
 import { TtypeOptions } from './types'
-import { isHttp, launch, goto, screenshot } from './utils'
+import { isHttp, launch, goto, screenshot, isString, isObject, parseViewportString } from './utils'
 export { TtypeOptions } from './types'
 
 let browser: Browser | null, page: Page | null
+
+const DEFAULT_VIEWPORT = {
+  width: 1080,
+  height: 1920
+}
+
 // eslint-disable-next-line max-statements, @typescript-eslint/no-explicit-any
-export default async (data: TtypeOptions): Promise<string | Buffer> =>{
+export default async (data: TtypeOptions): Promise<string | Buffer> => {
   try {
+    const { viewport, isMobile = false } = data
     // Whether or not it starts with the http protocol
     data.url = isHttp(data.url) ? data.url : `http://${data.url}`
 
@@ -17,20 +24,28 @@ export default async (data: TtypeOptions): Promise<string | Buffer> =>{
     // Creating a new tab
     page = await browser.newPage()
 
-    // Setting the screenshot aspect ratio
-    if (data.viewport) {
-      const [widthStr, heightStr] = data.viewport.split('x').map((str) => str.trim())
-      const width = parseInt(widthStr)
-      const height = parseInt(heightStr || widthStr) // Use width as height if height is not provided
-      if (!isNaN(width) && !isNaN(height)) {
-        const viewport: Viewport = {
-          width,
-          height,
-          isMobile: data.isMobile ?? false
-        }
 
-        await page.setViewport(viewport) // Setting the page size
+    // Setting the screenshot aspect ratio
+    if (!viewport) {
+      // No viewport passed in
+      await page.setViewport({ ...DEFAULT_VIEWPORT, isMobile }) // Setting the page size
+    } else if (isString(viewport)) {
+      const parsedViewport = parseViewportString(viewport as string)
+      // parse failed, when using default values
+      if (parsedViewport) {
+        await page.setViewport({ ...parsedViewport, isMobile }) // Setting the page size
+      } else {
+        // eslint-disable-next-line max-len, no-console
+        console.warn(`viewport parameter parsing exception, please check whether it is passed in accordance with "width x height" rules, or using viewport object ${viewport}`)
+        await page.setViewport({ ...DEFAULT_VIEWPORT, isMobile })
       }
+    } else if (isObject(viewport)) {
+      // is viewport type
+      const modifiedViewport: Viewport = {
+        ...(viewport as Viewport),
+        isMobile // override isMobile property
+      }
+      await page.setViewport(modifiedViewport)
     }
 
 
