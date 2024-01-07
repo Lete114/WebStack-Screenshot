@@ -1,7 +1,7 @@
-import type { Browser, Page, PuppeteerLifeCycleEvent, Viewport } from 'puppeteer-core'
+import type { Browser, Page, Viewport } from 'puppeteer-core'
 import puppeteer from 'puppeteer-core'
 import { TtypeOptions } from './types'
-import { isHttp, launch, goto, screenshot, isBoolean } from './utils'
+import { isHttp, launch, goto, screenshot } from './utils'
 export { TtypeOptions } from './types'
 
 let browser: Browser | null, page: Page | null
@@ -9,7 +9,7 @@ let browser: Browser | null, page: Page | null
 export default async (data: TtypeOptions): Promise<string | Buffer> =>{
   try {
     // Whether or not it starts with the http protocol
-    data.url = isHttp(data.url) ? data.url : 'http://' + data.url
+    data.url = isHttp(data.url) ? data.url : `http://${data.url}`
 
     const launchOpt = await launch()
     if (!browser) browser = await puppeteer.launch(launchOpt)
