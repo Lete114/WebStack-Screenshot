@@ -12,7 +12,6 @@ export type TtypeOptions = {
   timeout?: number
   encoding?: 'binary' | 'base64'
   clip?: string
-  font: string
   waitUntil?: PuppeteerLifeCycleEvent
 }
 
