@@ -1,14 +1,22 @@
-import type { Browser, Page, PuppeteerLifeCycleEvent, Viewport } from 'puppeteer-core'
+import type { Browser, Page, Viewport } from 'puppeteer-core'
 import puppeteer from 'puppeteer-core'
 import { TtypeOptions } from './types'
-import { isHttp, launch, goto, screenshot, isBoolean } from './utils'
+import { isHttp, launch, goto, screenshot, isString, isObject, parseViewportString } from './utils'
+export { TtypeOptions } from './types'
 
 let browser: Browser | null, page: Page | null
+
+const DEFAULT_VIEWPORT = {
+  width: 1920,
+  height: 1080
+}
+
 // eslint-disable-next-line max-statements, @typescript-eslint/no-explicit-any
-export = async function (data: TtypeOptions): Promise<string | Buffer> {
+export default async (data: TtypeOptions): Promise<string | Buffer> => {
   try {
+    const { viewport, isMobile = false } = data
     // Whether or not it starts with the http protocol
-    data.url = isHttp(data.url) ? data.url : 'http://' + data.url
+    data.url = isHttp(data.url) ? data.url : `http://${data.url}`
 
     const launchOpt = await launch()
     if (!browser) browser = await puppeteer.launch(launchOpt)
@@ -17,26 +25,32 @@ export = async function (data: TtypeOptions): Promise<string | Buffer> {
     page = await browser.newPage()
 
     // Setting the screenshot aspect ratio
-    if (data.viewport) {
-      const viewport = data.viewport.split('x')
-      if (viewport.length === 1) viewport.push(viewport[0])
-      data.viewport = {
-        width: parseInt(viewport[0]),
-        height: parseInt(viewport[1]),
-        isMobile: isBoolean(data.isMobile)
-      } as unknown as string
-      await page.setViewport(data.viewport as unknown as Viewport) // Setting the page size
+    if (isString(viewport)) {
+      const parsedViewport = parseViewportString(viewport as string)
+      // parse failed, when using default values
+      if (parsedViewport) {
+        await page.setViewport({ ...parsedViewport, isMobile }) // Setting the page size
+      } else {
+        // eslint-disable-next-line max-len, no-console
+        console.warn(`viewport parameter parsing exception, please check whether it is passed in accordance with "width x height" rules, or using viewport object ${viewport}`)
+        await page.setViewport({ ...DEFAULT_VIEWPORT, isMobile })
+      }
+    } else if (isObject(viewport)) {
+      // is viewport type
+      const modifiedViewport: Viewport = {
+        ...(viewport as Viewport),
+        isMobile // override isMobile property
+      }
+      await page.setViewport(modifiedViewport)
+    } else {
+      // No viewport passed in
+      await page.setViewport({ ...DEFAULT_VIEWPORT, isMobile }) // Setting the page size
     }
+
 
     // open a website
     const gotoOpt = goto(data)
-    await page.goto(
-      data.url,
-      gotoOpt as {
-        timeout: number
-        waitUntil: PuppeteerLifeCycleEvent
-      }
-    )
+    await page.goto(data.url, gotoOpt)
 
     const screenshotOpt = screenshot(data)
     // Wait after page rendering is complete (milliseconds)
@@ -57,3 +71,4 @@ export = async function (data: TtypeOptions): Promise<string | Buffer> {
   }
   return ''
 }
+

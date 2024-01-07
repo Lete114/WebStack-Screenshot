@@ -1,24 +1,8 @@
 import bodyData from 'body-data'
 import { IncomingMessage, ServerResponse } from 'http'
-import { PuppeteerLifeCycleEvent, ScreenshotClip } from 'puppeteer-core'
 import main from './main'
 import { cache, screenshot } from './utils'
-
-type typeOptions = {
-  url: string
-  type: 'png' | 'jpeg' | 'webp'
-  cache: number | boolean
-  quality: number
-  viewport: string
-  fullPage: boolean
-  isMobile: boolean
-  await: number
-  timeout: number
-  encoding: 'binary' | 'base64'
-  clip: ScreenshotClip
-  font: string
-  waitUntil: PuppeteerLifeCycleEvent
-}
+import type { TtypeOptions } from './types'
 
 /*eslint-disable max-statements */
 export = async (req: IncomingMessage, res: ServerResponse) => {
@@ -29,7 +13,7 @@ export = async (req: IncomingMessage, res: ServerResponse) => {
 
   try {
     if (req.url === '/favicon.ico') return res.end()
-    const data: typeOptions = (await bodyData(req)) as typeOptions
+    const data: TtypeOptions = (await bodyData(req)) as TtypeOptions
 
     const projectUrl = 'https://github.com/Lete114/WebStack-Screenshot#properties'
     if (!data.url) {

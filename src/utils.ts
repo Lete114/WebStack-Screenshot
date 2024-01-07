@@ -2,9 +2,9 @@
 import { tmpdir } from 'os'
 import { join } from 'path'
 import { existsSync, mkdirSync } from 'fs'
-import type { PuppeteerLifeCycleEvent, ScreenshotClip, ScreenshotOptions } from 'puppeteer-core'
+import type { ScreenshotClip, ScreenshotOptions, Viewport } from 'puppeteer-core'
 import { args } from './args'
-import { TlaunchOptions } from './types'
+import { TlaunchOptions, TtypeOptions } from './types'
 
 const { WEBSTACK_SCREENSHOT_SERVERLESS, WEBSTACK_SCREENSHOT_FONTS, WEBSTACK_SCREENSHOT_PUPPETEER_EXECUTABLE_PATH } =
   process.env
@@ -24,6 +24,13 @@ export function isHttp(url: string) {
   return /^https?:\/\//.test(url)
 }
 
+export function isString(value: any): boolean {
+  return typeof value === 'string'
+}
+
+export function isObject(value: any): boolean {
+  return typeof value === 'object' && value !== null
+}
 export const isValidKey = (key: string, object: object): key is keyof typeof object => key in object
 
 export function deepClone(data: any): { [key: string]: any } {
@@ -34,16 +41,15 @@ export function deepClone(data: any): { [key: string]: any } {
   }
 }
 
-export function clip(data: { [key: string]: string }) {
-  if (!data.clip) return
-  const clip = data.clip.split(',')
-  const opt: ScreenshotClip = {
-    x: parseInt(clip[0]),
-    y: parseInt(clip[1]),
-    width: parseInt(clip[2]),
-    height: parseInt(clip[3])
+export function parseClip(clip: string): ScreenshotClip {
+  const [x = '0', y = '0', width = '0', height = '0'] = clip.split(',').map((part) => part.trim())
+
+  return {
+    x: parseInt(x),
+    y: parseInt(y),
+    width: parseInt(width),
+    height: parseInt(height)
   }
-  return opt
 }
 
 export async function launch() {
@@ -79,65 +85,60 @@ export async function launch() {
   return localOptions
 }
 
-export function goto(data: { [x: string]: any; timeout?: any; await?: any; waitUntil?: any }) {
-  const options: { timeout?: number; await?: number; waitUntil?: PuppeteerLifeCycleEvent } = {}
 
-  // Timeout, default 30s
-  if (isNumber(data.timeout)) {
-    options.timeout = Math.abs(data.timeout) ?? 30000
+export type GotoType = Pick<TtypeOptions, 'await' | 'waitUntil' | 'timeout'>;
+
+export function goto(data: GotoType): GotoType {
+  const options: GotoType = {
+    timeout: data.timeout ?? 30000,
+    await: data.await || 0,
+    waitUntil: data.waitUntil ?? 'load'
   }
-
-  // Wait after the page is rendered (milliseconds)
-  if (isNumber(data.await)) options.await = Math.abs(data.await) || 0
-
-  // When do you trigger the screenshot?
-  const waitUntils = [
-    'load', // When the load event is triggered
-    'domcontentloaded', // On DOMContentLoaded event trigger
-    'networkidle0', // When there are no website requests within 500ms
-    'networkidle2' // When there are only 2 requests within 500ms
-  ]
-  options.waitUntil = waitUntils.includes(data.waitUntil) ? data.waitUntil : waitUntils[0]
 
   return options
 }
 
-export function screenshot(data: { [key: string]: any }) {
+export function screenshot(data: TtypeOptions) {
+  const { quality = 80, type = 'jpeg', encoding = 'binary', fullPage = false, clip } = data
   const options: ScreenshotOptions = {}
 
   // Image quality between 0-100, ignored if the image type is png
-  options.quality = 50
-  if (isNumber(data.quality)) options.quality = Math.abs(data.quality)
+  options.quality = quality
+  options.type = type
 
-  // Image type
-  const types = ['jpeg', 'png', 'webp']
-  options.type = types.includes(data.type) ? data.type : types[0]
-
-  // Image encoding
-  const encodings = ['binary', 'base64']
-
-  options.encoding = encodings.includes(data.encoding) ? data.encoding : encodings[0]
+  options.encoding = encoding
 
   // Screenshot of the full page
-  options.fullPage = isBoolean(data.fullPage)
+  options.fullPage = fullPage
 
   // Intercepts the specified coordinates and width and height
-  const clipOpt = clip(data)
-  if (clipOpt) options.clip = clipOpt
-
+  if (clip) {
+    options.clip = parseClip(clip)
+  }
   return options
 }
 
-export function cache(cache: number | boolean) {
+
+export function cache(cache: number | boolean | undefined): string | undefined {
   // Do not use http forced caching
-  if ((cache as unknown as string) === 'false') return
+  // catch is false or cache is zero
+  if (cache === false || cache === 0) return undefined
 
   const sec = Math.abs(cache as number)
   const daySec = 86400
   const cacheKey = 'public, no-transform, s-maxage=$, max-age=$'
 
-  // eslint-disable-next-line eqeqeq
-  if (cache == void 0) return cacheKey.replace(/\$/g, daySec as unknown as string)
+  if (!cache) return cacheKey.replace(/\$/g, daySec.toString())
 
-  if (isNumber(sec)) return cacheKey.replace(/\$/g, sec as unknown as string)
+  if (isNumber(sec)) return cacheKey.replace(/\$/g, sec.toString())
+
+  return undefined
+}
+
+export function parseViewportString(viewportString: string): Viewport | null {
+  const [widthStr, heightStr] = viewportString.split('x').map((str) => str.trim())
+  const width = parseInt(widthStr)
+  const height = parseInt(heightStr || widthStr)
+
+  return (!isNaN(width) && !isNaN(height)) ? { width, height } : null
 }
