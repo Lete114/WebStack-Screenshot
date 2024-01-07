@@ -112,7 +112,7 @@ export function screenshot(data: TtypeOptions) {
 }
 
 
-export function cache(cache: number | boolean): string | undefined {
+export function cache(cache: number | boolean | undefined): string | undefined {
   // Do not use http forced caching
   // catch is false or cache is zero
   if (cache === false || cache === 0) return undefined

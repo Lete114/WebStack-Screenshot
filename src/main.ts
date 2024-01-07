@@ -6,7 +6,7 @@ export { TtypeOptions } from './types'
 
 let browser: Browser | null, page: Page | null
 // eslint-disable-next-line max-statements, @typescript-eslint/no-explicit-any
-export async function webstackScreenshot(data: TtypeOptions): Promise<string | Buffer> {
+export default async (data: TtypeOptions): Promise<string | Buffer> =>{
   try {
     // Whether or not it starts with the http protocol
     data.url = isHttp(data.url) ? data.url : 'http://' + data.url
@@ -60,3 +60,4 @@ export async function webstackScreenshot(data: TtypeOptions): Promise<string | B
   }
   return ''
 }
+
