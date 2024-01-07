@@ -7,8 +7,8 @@ export { TtypeOptions } from './types'
 let browser: Browser | null, page: Page | null
 
 const DEFAULT_VIEWPORT = {
-  width: 1080,
-  height: 1920
+  width: 1920,
+  height: 1080
 }
 
 // eslint-disable-next-line max-statements, @typescript-eslint/no-explicit-any
@@ -24,12 +24,8 @@ export default async (data: TtypeOptions): Promise<string | Buffer> => {
     // Creating a new tab
     page = await browser.newPage()
 
-
     // Setting the screenshot aspect ratio
-    if (!viewport) {
-      // No viewport passed in
-      await page.setViewport({ ...DEFAULT_VIEWPORT, isMobile }) // Setting the page size
-    } else if (isString(viewport)) {
+    if (isString(viewport)) {
       const parsedViewport = parseViewportString(viewport as string)
       // parse failed, when using default values
       if (parsedViewport) {
@@ -46,15 +42,15 @@ export default async (data: TtypeOptions): Promise<string | Buffer> => {
         isMobile // override isMobile property
       }
       await page.setViewport(modifiedViewport)
+    } else {
+      // No viewport passed in
+      await page.setViewport({ ...DEFAULT_VIEWPORT, isMobile }) // Setting the page size
     }
 
 
     // open a website
     const gotoOpt = goto(data)
-    await page.goto(
-      data.url,
-      gotoOpt
-    )
+    await page.goto(data.url, gotoOpt)
 
     const screenshotOpt = screenshot(data)
     // Wait after page rendering is complete (milliseconds)
