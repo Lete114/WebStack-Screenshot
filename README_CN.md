@@ -75,20 +75,20 @@ npm run start
 
 请求方法: GET | POST
 
-| 属性      | 默认值    | 类型          | 描述                                                                      |
-| --------- | --------- | ------------- | ------------------------------------------------------------------------- |
-| url       |           | String        | 请求的网站 URL 地址，如果输入的是域名会自动拼接`http://`                  |
-| type      | jpeg      | String        | 图片类型，`png`、`jpeg`、`webp`                                           |
-| cache     | 86400     | Int & Boolean | 缓存，默认缓存为 1 天，传入`false`禁用缓存，传入数字如:`123`则缓存 123 秒 |
-| quality   | 50        | Int           | 图片质量**0-100**之间，如果是图片类型是`png`则被忽略                      |
-| viewport   | `{width: 1080,height: 1920,isMobile: false}` | String \| Viewport| 设置屏幕窗口大小                                      |
-| fullPage  | false     | Boolean       | 截取完整页面                                                              |
-| isMobile  | false     | Boolean       | 是否是手机端                                                              |
-| await     | 1000      | Int           | 页面渲染完成后等待                                                        |
-| timeout   | 30000     | Int           | 截图超时，`0`表示无限制(单位毫秒)                                         |
-| encoding  | binary    | String        | 图片编码，`binary`、`base64`                                              |
-| clip      |           | String        | 剪切指定区域，接收 4 个单位以英文**逗号**分割分别是`x,y,width,height`     |
-| waitUntil | load      | String        | 在什么时机触发截图，[详细请看下方另一个表格 ](#waituntil)                 |
+| 属性      | 默认值                                       | 类型               | 描述                                                                      |
+| --------- | -------------------------------------------- | ------------------ | ------------------------------------------------------------------------- |
+| url       |                                              | String             | 请求的网站 URL 地址，如果输入的是域名会自动拼接`http://`                  |
+| type      | jpeg                                         | String             | 图片类型，`png`、`jpeg`、`webp`                                           |
+| cache     | 86400                                        | Int & Boolean      | 缓存，默认缓存为 1 天，传入`false`禁用缓存，传入数字如:`123`则缓存 123 秒 |
+| quality   | 50                                           | Int                | 图片质量**0-100**之间，如果是图片类型是`png`则被忽略                      |
+| viewport  | `{width: 1080,height: 1920,isMobile: false}` | String \| Viewport | 设置屏幕窗口大小                                                          |
+| fullPage  | false                                        | Boolean            | 截取完整页面                                                              |
+| isMobile  | false                                        | Boolean            | 是否是手机端                                                              |
+| await     | 1000                                         | Int                | 页面渲染完成后等待                                                        |
+| timeout   | 30000                                        | Int                | 截图超时，`0`表示无限制(单位毫秒)                                         |
+| encoding  | binary                                       | String             | 图片编码，`binary`、`base64`                                              |
+| clip      |                                              | String             | 剪切指定区域，接收 4 个单位以英文**逗号**分割分别是`x,y,width,height`     |
+| waitUntil | load                                         | String             | 在什么时机触发截图，[详细请看下方另一个表格 ](#waituntil)                 |
 
 ### waitUntil
 

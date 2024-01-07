@@ -47,7 +47,6 @@ export default async (data: TtypeOptions): Promise<string | Buffer> => {
       await page.setViewport({ ...DEFAULT_VIEWPORT, isMobile }) // Setting the page size
     }
 
-
     // open a website
     const gotoOpt = goto(data)
     await page.goto(data.url, gotoOpt)
@@ -71,4 +70,3 @@ export default async (data: TtypeOptions): Promise<string | Buffer> => {
   }
   return ''
 }
-

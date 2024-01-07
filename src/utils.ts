@@ -76,7 +76,7 @@ export async function launch() {
 
   // local (Server)
   const localOptions = options
-  const { executablePath } = (await import('puppeteer'))
+  const { executablePath } = await import('puppeteer')
   localOptions.executablePath = executablePath()
   if (WEBSTACK_SCREENSHOT_PUPPETEER_EXECUTABLE_PATH) {
     localOptions.executablePath = WEBSTACK_SCREENSHOT_PUPPETEER_EXECUTABLE_PATH
@@ -85,8 +85,7 @@ export async function launch() {
   return localOptions
 }
 
-
-export type GotoType = Pick<TtypeOptions, 'await' | 'waitUntil' | 'timeout'>;
+export type GotoType = Pick<TtypeOptions, 'await' | 'waitUntil' | 'timeout'>
 
 export function goto(data: GotoType): GotoType {
   const options: GotoType = {
@@ -118,7 +117,6 @@ export function screenshot(data: TtypeOptions) {
   return options
 }
 
-
 export function cache(cache: number | boolean | undefined): string | undefined {
   // Do not use http forced caching
   // catch is false or cache is zero
@@ -140,5 +138,5 @@ export function parseViewportString(viewportString: string): Viewport | null {
   const width = parseInt(widthStr)
   const height = parseInt(heightStr || widthStr)
 
-  return (!isNaN(width) && !isNaN(height)) ? { width, height } : null
+  return isNaN(width) && isNaN(height) ? null : { width, height }
 }
