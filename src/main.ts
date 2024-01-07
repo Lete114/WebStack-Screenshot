@@ -26,7 +26,7 @@ export default async (data: TtypeOptions): Promise<string | Buffer> =>{
         const viewport: Viewport = {
           width,
           height,
-          isMobile: isBoolean(data.isMobile)
+          isMobile: data.isMobile ?? false
         }
 
         await page.setViewport(viewport) // Setting the page size

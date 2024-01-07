@@ -7,7 +7,7 @@ export type TtypeOptions = {
   quality?: number
   viewport?: string
   fullPage?: boolean
-  isMobile: boolean
+  isMobile?: boolean
   await?: number
   timeout?: number
   encoding?: 'binary' | 'base64'
