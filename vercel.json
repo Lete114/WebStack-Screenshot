@@ -1,3 +1,6 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "api/index" }]
+  "rewrites": [{ "source": "/(.*)", "destination": "api/index" }],
+  "env": {
+    "WEBSTACK_SCREENSHOT_SERVERLESS": "true"
+  }
 }
