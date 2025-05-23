@@ -1,14 +1,16 @@
 {
   "name": "webstack-screenshot",
+  "type": "module",
   "version": "2.0.0-beta.6",
   "description": "📸网站截图 API | Website Screenshot API ",
-  "main": "dist/src/main.js",
-  "scripts": {
-    "build": "tsc",
-    "start": "ts-node ./src/server.ts",
-    "start:hot": "nodemon ./src/server.ts",
-    "lint": "eslint src && prettier --check src",
-    "lint:fix": "eslint --fix src && prettier --check --write src"
+  "author": "Lete <me@imlete.cn> (https://blog.imlete.cn)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lete114/WebStack-Screenshot.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Lete114/WebStack-Screenshot/issues"
   },
   "keywords": [
     "webstack",
@@ -21,32 +23,55 @@
     "img",
     "image"
   ],
-  "author": "Lete <me@imlete.cn> (https://blog.imlete.cn)",
-  "license": "MIT",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
   "files": [
     "dist"
   ],
-  "bugs": {
-    "url": "https://github.com/Lete114/WebStack-Screenshot/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Lete114/WebStack-Screenshot.git"
+  "scripts": {
+    "build": "unbuild",
+    "dev": "unbuild --stub",
+    "lint": "eslint",
+    "prepublishOnly": "pnpm build",
+    "start": "nodemon --exec tsx start.ts",
+    "test": "vitest",
+    "typecheck": "tsc --noEmit",
+    "prepare": "simple-git-hooks"
   },
   "dependencies": {
-    "@sparticuz/chromium": "^116.0.0",
-    "body-data": "^1.0.6",
-    "puppeteer": "^21.2.1",
-    "puppeteer-core": "^21.2.1"
+    "body-data": "catalog:deps",
+    "puppeteer": "catalog:deps",
+    "puppeteer-core": "catalog:deps"
   },
   "devDependencies": {
-    "@types/node": "^18.11.9",
-    "@typescript-eslint/eslint-plugin": "^5.42.1",
-    "@typescript-eslint/parser": "^5.42.1",
-    "eslint": "^8.10.0",
-    "nodemon": "^2.0.15",
-    "prettier": "^2.5.1",
-    "ts-node": "^10.9.1",
-    "typescript": "^4.8.4"
+    "@antfu/eslint-config": "catalog:cli",
+    "@types/node": "catalog:types",
+    "eslint": "catalog:cli",
+    "lint-staged": "catalog:cli",
+    "nodemon": "catalog:devDeps",
+    "simple-git-hooks": "catalog:cli",
+    "tinyexec": "catalog:utils",
+    "tsx": "catalog:cli",
+    "typescript": "catalog:cli",
+    "unbuild": "catalog:cli",
+    "vite": "catalog:cli",
+    "vitest": "catalog:testing",
+    "vitest-package-exports": "catalog:testing",
+    "yaml": "catalog:testing"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm i --frozen-lockfile --ignore-scripts --offline && npx lint-staged"
+  },
+  "lint-staged": {
+    "*": "eslint --fix"
   }
 }

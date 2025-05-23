@@ -1,11 +1,12 @@
-import { PuppeteerLaunchOptions, PuppeteerLifeCycleEvent, type Viewport } from 'puppeteer-core'
+import type { LaunchOptions, PuppeteerLifeCycleEvent, Viewport } from 'puppeteer-core'
 
-export type TtypeOptions = {
+export interface IOptions {
   url: string
   type?: 'png' | 'jpeg' | 'webp'
   cache?: number | boolean
   quality?: number
-  viewport?: string | Viewport
+  size?: string
+  viewport?: Viewport
   fullPage?: boolean
   isMobile?: boolean
   await?: number
@@ -15,4 +16,4 @@ export type TtypeOptions = {
   waitUntil?: PuppeteerLifeCycleEvent
 }
 
-export type TlaunchOptions = PuppeteerLaunchOptions
+export type TLaunchOptions = LaunchOptions

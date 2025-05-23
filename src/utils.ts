@@ -1,26 +1,20 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { tmpdir } from 'os'
-import { join } from 'path'
-import { existsSync, mkdirSync } from 'fs'
 import type { ScreenshotClip, ScreenshotOptions, Viewport } from 'puppeteer-core'
-import { args } from './args'
-import { TlaunchOptions, TtypeOptions } from './types'
+import type { IOptions, TLaunchOptions } from './types'
+import process from 'node:process'
+import puppeteer from 'puppeteer'
 
-const { WEBSTACK_SCREENSHOT_SERVERLESS, WEBSTACK_SCREENSHOT_FONTS, WEBSTACK_SCREENSHOT_PUPPETEER_EXECUTABLE_PATH } =
-  process.env
+const { WEBSTACK_SCREENSHOT_PUPPETEER_EXECUTABLE_PATH }
+  = process.env
 
-const TMP_DIR_PATH = join(tmpdir(), 'WebStack-Screenshot')
-if (!existsSync(TMP_DIR_PATH)) mkdirSync(TMP_DIR_PATH, { recursive: true })
-
-export function isBoolean(value: string | boolean) {
-  return value === 'true' || value === true ? true : false
+export function isBoolean(value: string | boolean): boolean {
+  return !!(value === 'true' || value === true)
 }
 
-export function isNumber(value: number) {
-  return !isNaN(value)
+export function isNumber(value: number): boolean {
+  return !Number.isNaN(value)
 }
 
-export function isHttp(url: string) {
+export function isHttp(url: string): boolean {
   return /^https?:\/\//.test(url)
 }
 
@@ -36,68 +30,52 @@ export const isValidKey = (key: string, object: object): key is keyof typeof obj
 export function deepClone(data: any): { [key: string]: any } {
   try {
     return JSON.parse(JSON.stringify(data))
-  } catch (error) {
+  }
+  catch (error) {
+    console.error(`clone failure: ${error}`)
     return {}
   }
 }
 
 export function parseClip(clip: string): ScreenshotClip {
-  const [x = '0', y = '0', width = '0', height = '0'] = clip.split(',').map((part) => part.trim())
+  const [x = '0', y = '0', width = '0', height = '0'] = clip.split(',').map(part => part.trim())
 
   return {
-    x: parseInt(x),
-    y: parseInt(y),
-    width: parseInt(width),
-    height: parseInt(height)
+    x: Number.parseInt(x),
+    y: Number.parseInt(y),
+    width: Number.parseInt(width),
+    height: Number.parseInt(height),
   }
 }
 
-export async function launch() {
-  const options: TlaunchOptions = {
-    args,
-    defaultViewport: {
-      height: 1080,
-      width: 1920
-    }
+export function getLaunch(options: TLaunchOptions = {}): TLaunchOptions {
+  const opts: TLaunchOptions = {
+    // args,
+    ...options,
+    // headless: 'shell'
+    executablePath: puppeteer.executablePath(),
   }
 
-  // lambda (ServerLess)
-  const lambdaOptions = options
-  if (WEBSTACK_SCREENSHOT_SERVERLESS) {
-    const chromium = (await import('@sparticuz/chromium')).default
-    // install font
-    if (WEBSTACK_SCREENSHOT_FONTS) {
-      const fonts = (WEBSTACK_SCREENSHOT_FONTS || '').split(',').filter(Boolean)
-      await Promise.all(fonts.map((font) => chromium.font(font)))
-    }
-    lambdaOptions.executablePath = await chromium.executablePath()
-    return lambdaOptions
-  }
-
-  // local (Server)
-  const localOptions = options
-  const { executablePath } = await import('puppeteer')
-  localOptions.executablePath = executablePath()
   if (WEBSTACK_SCREENSHOT_PUPPETEER_EXECUTABLE_PATH) {
-    localOptions.executablePath = WEBSTACK_SCREENSHOT_PUPPETEER_EXECUTABLE_PATH
+    opts.executablePath = WEBSTACK_SCREENSHOT_PUPPETEER_EXECUTABLE_PATH
   }
 
-  return localOptions
+  return opts
 }
 
-export type GotoType = Pick<TtypeOptions, 'await' | 'waitUntil' | 'timeout'>
+export type GotoType = Pick<IOptions, 'await' | 'waitUntil' | 'timeout'>
 
 export function goto(data: GotoType): GotoType {
   const options: GotoType = {
     timeout: data.timeout ?? 30000,
     await: data.await || 0,
-    waitUntil: data.waitUntil ?? 'load'
+    waitUntil: data.waitUntil ?? 'load',
   }
 
   return options
 }
 
-export function screenshot(data: TtypeOptions) {
+export function getScreenshotOptions(data: IOptions): ScreenshotOptions {
   const { quality = 80, type = 'jpeg', encoding = 'binary', fullPage = false, clip } = data
   const options: ScreenshotOptions = {}
 
@@ -120,23 +98,29 @@ export function screenshot(data: TtypeOptions) {
 export function cache(cache: number | boolean | undefined): string | undefined {
   // Do not use http forced caching
   // catch is false or cache is zero
-  if (cache === false || cache === 0) return undefined
+  if (cache === false || cache === 0) {
+    return undefined
+  }
 
   const sec = Math.abs(cache as number)
   const daySec = 86400
   const cacheKey = 'public, no-transform, s-maxage=$, max-age=$'
 
-  if (!cache) return cacheKey.replace(/\$/g, daySec.toString())
+  if (!cache) {
+    return cacheKey.replace(/\$/g, daySec.toString())
+  }
 
-  if (isNumber(sec)) return cacheKey.replace(/\$/g, sec.toString())
+  if (isNumber(sec)) {
+    return cacheKey.replace(/\$/g, sec.toString())
+  }
 
   return undefined
 }
 
 export function parseViewportString(viewportString: string): Viewport | null {
-  const [widthStr, heightStr] = viewportString.split('x').map((str) => str.trim())
-  const width = parseInt(widthStr)
-  const height = parseInt(heightStr || widthStr)
+  const [widthStr, heightStr] = viewportString.split('x').map(str => str.trim())
+  const width = Number.parseInt(widthStr)
+  const height = Number.parseInt(heightStr || widthStr)
 
-  return isNaN(width) && isNaN(height) ? null : { width, height }
+  return Number.isNaN(width) && Number.isNaN(height) ? null : { width, height }
 }

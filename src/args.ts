@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 export const args = (() => {
   /**
    * These are the default args in puppeteer.
@@ -31,7 +30,7 @@ export const args = (() => {
     '--metrics-recording-only',
     '--no-first-run',
     '--password-store=basic',
-    '--use-mock-keychain'
+    '--use-mock-keychain',
   ]
   const puppeteerDisableFeatures = [
     'Translate',
@@ -39,7 +38,7 @@ export const args = (() => {
     // AcceptCHFrame disabled because of crbug.com/1348106.
     'AcceptCHFrame',
     'MediaRouter',
-    'OptimizationHints'
+    'OptimizationHints',
   ]
   const puppeteerEnableFeatures = ['NetworkServiceInProcess2']
   const chromiumFlags = [
@@ -51,7 +50,7 @@ export const args = (() => {
     '--no-default-browser-check',
     '--no-pings',
     // Needs to be single-process to avoid `prctl(PR_SET_NO_NEW_PRIVS) failed` error
-    '--single-process'
+    '--single-process',
   ]
   const chromiumDisableFeatures = ['AudioServiceOutOfProcess', 'IsolateOrigins', 'site-per-process']
   const chromiumEnableFeatures = ['SharedArrayBuffer']
@@ -63,7 +62,7 @@ export const args = (() => {
     '--use-gl=angle',
     '--use-angle=swiftshader',
     // https://source.chromium.org/search?q=lang:cpp+symbol:kWindowSize&ss=chromium
-    '--window-size=1920,1080'
+    '--window-size=1920,1080',
   ]
   const insecureFlags = [
     '--allow-running-insecure-content',
@@ -72,7 +71,7 @@ export const args = (() => {
     '--disable-web-security',
     '--no-sandbox',
     // https://source.chromium.org/search?q=lang:cpp+symbol:kNoZygote&ss=chromium
-    '--no-zygote'
+    '--no-zygote',
   ]
   return [
     ...puppeteerFlags,
@@ -81,6 +80,6 @@ export const args = (() => {
     `--enable-features=${[...puppeteerEnableFeatures, ...chromiumEnableFeatures].join(',')}`,
     ...graphicsFlags,
     ...insecureFlags,
-    "--headless='new'"
+    '--headless=\'new\'',
   ]
 })()
