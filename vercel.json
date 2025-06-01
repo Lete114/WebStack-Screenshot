@@ -1,6 +1,7 @@
 {
   "rewrites": [{ "source": "/(.*)", "destination": "api/index" }],
   "env": {
-    "WEBSTACK_SCREENSHOT_SERVERLESS": "true"
+    "WEBSTACK_SCREENSHOT_IS_AWS_LAMBDA": "true",
+    "WEBSTACK_SCREENSHOT_FONTS": "https://raw.githubusercontent.com/notofonts/noto-cjk/refs/heads/main/Sans/OTF/SimplifiedChinese/NotoSansCJKsc-Regular.otf,https://raw.githubusercontent.com/notofonts/noto-cjk/refs/heads/main/Sans/OTF/SimplifiedChinese/NotoSansCJKsc-Bold.otf"
   }
 }
