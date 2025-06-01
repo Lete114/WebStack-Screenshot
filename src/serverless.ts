@@ -3,6 +3,7 @@ import type { IOptions } from './types'
 import process from 'node:process'
 import { bodyData } from 'body-data'
 import { getScreenshot } from './main'
+import { Screenshot } from './screenshot'
 import { cache, isHttp } from './utils'
 
 export async function serverless(req: IncomingMessage, res: ServerResponse): Promise<void> {
@@ -40,13 +41,15 @@ export async function serverless(req: IncomingMessage, res: ServerResponse): Pro
       res.setHeader('Cache-Control', cacheResult)
     }
 
-    if (data.encoding === 'base64') {
-      const base64 = `data:image/${data.type};base64,${content}`
+    const instance = Screenshot.getInstance()
+    const options = instance.parse(data)
+    if (options.encoding === 'base64') {
+      const base64 = `data:image/${options.type};base64,${content}`
       res.end(JSON.stringify({ data: base64 }))
     }
     else {
-      res.setHeader('Content-Type', `image/${data.type}`)
-      res.write(content, data.encoding as BufferEncoding)
+      res.setHeader('Content-Type', `image/${options.type}`)
+      res.write(content, options.encoding as BufferEncoding)
     }
     res.end()
   }
