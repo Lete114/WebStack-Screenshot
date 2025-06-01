@@ -31,6 +31,9 @@ catalogs:
       specifier: ^6.2.1
       version: 6.3.5
   deps:
+    '@sparticuz/chromium':
+      specifier: 135.0.0-next.0
+      version: 135.0.0-next.0
     body-data:
       specifier: ^2.0.1
       version: 2.0.1
@@ -67,6 +70,9 @@ importers:
 
   .:
     dependencies:
+      '@sparticuz/chromium':
+        specifier: catalog:deps
+        version: 135.0.0-next.0
       body-data:
         specifier: catalog:deps
         version: 2.0.1
@@ -633,6 +639,10 @@ packages:
     resolution: {integrity: sha512-bwspbWB04XJpeElvsp+DCylKfF4trJDa2Y9Go8O6A7YLX2LIKGcNK/CYImJN6ZP4DcuOHB4Utl3iCbnR62DudA==}
     cpu: [x64]
     os: [win32]
+
+  '@sparticuz/chromium@135.0.0-next.0':
+    resolution: {integrity: sha512-R4RgKezTTKQc//i+qu5JagxYYU6hhW3bzKDV/2WmvZhKZIiHCPxHr2MLSgt6E6q4TFuVcrkfa1TNHnpFwY/uJg==}
+    engines: {node: '>=20.11.0'}
 
   '@stylistic/eslint-plugin@4.2.0':
     resolution: {integrity: sha512-8hXezgz7jexGHdo5WN6JBEIPHCSFyyU4vgbxevu4YLVS5vl+sxqAAGyXSzfNDyR6xMNSH5H1x67nsXcYMOHtZA==}
@@ -1685,6 +1695,15 @@ packages:
 
   flatted@3.3.3:
     resolution: {integrity: sha512-GX+ysw4PBCz0PzosHDepZGANEuFCMLrnRTiEy9McGjmkCQYwRq4A/X786G/fjM/+OjsWSU1ZrY5qyARZmO/uwg==}
+
+  follow-redirects@1.15.9:
+    resolution: {integrity: sha512-gew4GsXizNgdoRyqmyfMHyAmXsZDk6mHkSxZFCzW9gwlbtOW44CDtYavM+y+72qD/Vq2l550kMF52DT8fOLJqQ==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
 
   format@0.2.2:
     resolution: {integrity: sha1-1hcBB+nv3E7TDJ3DkBbflCtctYs=}
@@ -3628,6 +3647,14 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.40.2':
     optional: true
 
+  '@sparticuz/chromium@135.0.0-next.0':
+    dependencies:
+      follow-redirects: 1.15.9
+      tar-fs: 3.0.8
+    transitivePeerDependencies:
+      - bare-buffer
+      - debug
+
   '@stylistic/eslint-plugin@4.2.0(eslint@9.26.0(jiti@2.4.2))(typescript@5.8.3)':
     dependencies:
       '@typescript-eslint/utils': 8.32.0(eslint@9.26.0(jiti@2.4.2))(typescript@5.8.3)
@@ -4840,6 +4867,8 @@ snapshots:
       keyv: 4.5.4
 
   flatted@3.3.3: {}
+
+  follow-redirects@1.15.9: {}
 
   format@0.2.2: {}
 

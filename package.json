@@ -29,6 +29,11 @@
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
     },
+    "./screenshot": {
+      "types": "./dist/screenshot.d.mts",
+      "import": "./dist/screenshot.mjs",
+      "require": "./dist/screenshot.cjs"
+    },
     "./package.json": "./package.json"
   },
   "main": "./dist/index.mjs",
@@ -48,6 +53,7 @@
     "prepare": "simple-git-hooks"
   },
   "dependencies": {
+    "@sparticuz/chromium": "catalog:deps",
     "body-data": "catalog:deps",
     "puppeteer": "catalog:deps",
     "puppeteer-core": "catalog:deps"

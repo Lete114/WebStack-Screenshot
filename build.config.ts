@@ -4,6 +4,7 @@ export default defineBuildConfig([
   {
     entries: [
       { input: 'src/index' },
+      { input: 'src/screenshot' },
     ],
     declaration: 'node16',
     clean: true,

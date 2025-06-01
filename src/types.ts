@@ -1,4 +1,4 @@
-import type { LaunchOptions, PuppeteerLifeCycleEvent, Viewport } from 'puppeteer-core'
+import type { LaunchOptions, PuppeteerLifeCycleEvent, ScreenshotClip, ScreenshotOptions, Viewport } from 'puppeteer-core'
 
 export interface IOptions {
   url: string
@@ -11,8 +11,8 @@ export interface IOptions {
   isMobile?: boolean
   await?: number
   timeout?: number
-  encoding?: 'binary' | 'base64'
-  clip?: string
+  encoding?: ScreenshotOptions['encoding']
+  clip?: string | ScreenshotClip
   waitUntil?: PuppeteerLifeCycleEvent
 }
 
