@@ -1,4 +1,3 @@
-export * from './args'
 export * from './constant'
 export * from './main'
 export * from './screenshot'
