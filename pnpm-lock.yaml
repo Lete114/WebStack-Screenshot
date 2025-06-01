@@ -32,8 +32,8 @@ catalogs:
       version: 6.3.5
   deps:
     '@sparticuz/chromium':
-      specifier: 135.0.0-next.0
-      version: 135.0.0-next.0
+      specifier: ^133.0.0
+      version: 133.0.0
     body-data:
       specifier: ^2.0.1
       version: 2.0.1
@@ -72,7 +72,7 @@ importers:
     dependencies:
       '@sparticuz/chromium':
         specifier: catalog:deps
-        version: 135.0.0-next.0
+        version: 133.0.0
       body-data:
         specifier: catalog:deps
         version: 2.0.1
@@ -640,9 +640,9 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@sparticuz/chromium@135.0.0-next.0':
-    resolution: {integrity: sha512-R4RgKezTTKQc//i+qu5JagxYYU6hhW3bzKDV/2WmvZhKZIiHCPxHr2MLSgt6E6q4TFuVcrkfa1TNHnpFwY/uJg==}
-    engines: {node: '>=20.11.0'}
+  '@sparticuz/chromium@133.0.0':
+    resolution: {integrity: sha512-wioNxMtSxRI+Y6ymc/UFPX9lY7A1SDgBezjFITH6arwe5CONfWosNDGpgflUGYajxxGktb1k3kjJ83jWzbccBw==}
+    engines: {node: '>= 16'}
 
   '@stylistic/eslint-plugin@4.2.0':
     resolution: {integrity: sha512-8hXezgz7jexGHdo5WN6JBEIPHCSFyyU4vgbxevu4YLVS5vl+sxqAAGyXSzfNDyR6xMNSH5H1x67nsXcYMOHtZA==}
@@ -3647,7 +3647,7 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.40.2':
     optional: true
 
-  '@sparticuz/chromium@135.0.0-next.0':
+  '@sparticuz/chromium@133.0.0':
     dependencies:
       follow-redirects: 1.15.9
       tar-fs: 3.0.8
